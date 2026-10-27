@@ -9,6 +9,8 @@ keywords:
   - "efficient ViT"
   - "Spatial Encoder"
   - "Large Language Model"
+  - "Vision-Language-Action Model"
+  - "World Models"
 
 # exclude_keywords: # 选择排除的关键词
 #   - "Large Language Model"
