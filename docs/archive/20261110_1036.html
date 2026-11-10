@@ -1,0 +1,991 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>arXiv 论文速递</title><style>
+:root {
+  --bg:#f8fafc; --card:#ffffff; --text:#0f172a; --muted:#667085; --border:#e5e7eb; --acc:#2563eb;
+}
+:root[data-theme="dark"] {
+  --bg:#0b0f17; --card:#111827; --text:#e5e7eb; --muted:#9ca3af; --border:#1f2937; --acc:#2563eb;
+}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);
+  font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;line-height:1.6;}
+.container{max-width:900px;margin:0 auto;padding:18px;}
+.header{display:flex;gap:10px;justify-content:space-between;align-items:center;margin:8px 0 16px;flex-wrap:wrap}
+h1{font-size:22px;margin:0}
+.badge{font-size:12px;color:#111827;background:var(--acc);padding:2px 8px;border-radius:999px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 18px;margin:14px 0;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.title{font-weight:700;margin:0 0 6px 0;font-size:18px}
+.meta-line{color:var(--muted);font-size:13px;margin:2px 0}
+.links a{color:var(--acc);text-decoration:none;margin-right:12px}
+.detail{margin-top:10px;background:rgba(2,6,23,.03);border:1px solid var(--border);border-radius:10px;padding:8px 10px}
+summary{cursor:pointer;color:var(--acc)}
+.mono{white-space:pre-wrap;background:rgba(2,6,23,.03);border:1px solid var(--border);padding:10px;border-radius:10px}
+.row{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width: 860px) {
+  .row-2{grid-template-columns:1fr 1fr}
+}
+.footer{color:var(--muted);font-size:13px;margin:20px 0 10px}
+.hr{height:1px;background:var(--border);margin:14px 0}
+.history-list a{display:block;color:var(--acc);text-decoration:none;margin:4px 0}
+.controls{display:flex;gap:8px;align-items:center}
+.btn{border:1px solid var(--border);background:var(--card);padding:6px 10px;border-radius:10px;cursor:pointer;color:var(--text)}
+.btn:hover{border-color:var(--acc)}
+</style>
+<script>
+(function() {
+  const root = document.documentElement;
+  function apply(t) {
+    if (t==='dark') root.setAttribute('data-theme','dark');
+    else if (t==='light') root.removeAttribute('data-theme');
+    else {
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        root.setAttribute('data-theme','dark');
+      else root.removeAttribute('data-theme');
+    }
+  }
+  let t = localStorage.getItem('theme') || 'light';
+  if (!['light','dark','auto'].includes(t)) t='light';
+  apply(t);
+  window.__toggleTheme = function() {
+    let cur = localStorage.getItem('theme') || 'light';
+    if (cur==='light') cur='dark';
+    else if (cur==='dark') cur='auto';
+    else cur='light';
+    localStorage.setItem('theme', cur);
+    apply(cur);
+    const el=document.getElementById('theme-label');
+    if(el) el.textContent = cur.toUpperCase();
+  }
+  window.__expandAll = function(open) {
+    document.querySelectorAll('details').forEach(d => d.open = !!open);
+  }
+})();
+</script>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>arXiv 论文速递</h1>
+      <div style="display:flex;gap:10px;align-items:center">
+        
+<div class="controls">
+  <button class="btn" onclick="__toggleTheme()">Theme: <span id="theme-label" style="margin-left:6px">AUTO</span></button>
+  <button class="btn" onclick="__expandAll(true)">Expand All</button>
+  <button class="btn" onclick="__expandAll(false)">Collapse All</button>
+</div>
+
+        <span class="badge">2026-11-10 10:36</span>
+      </div>
+    </div>
+    <div class="hr"></div>
+    <div>Snapshot: 20261110_1036</div>
+    <div class="row"><div class="card">
+<div class="title">The World is Not Mono: Enabling Spatial Understanding in Large Audio-Language Models</div>
+<div class="meta-line">Authors: Yuhuan You, Lai Wei, Tianshu Qu</div>
+<div class="meta-line">Venue: NeurIPS 2026</div>
+<div class="meta-line">First: 2026-01-06T11:54:47+00:00 · Latest: 2026-11-07T06:06:37+00:00</div>
+<div class="meta-line">Comments: NeurIPS 2026 camera-ready version. 35 pages, 4 figures</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2601.02954v4">Abs</a> · <a href="https://arxiv.org/pdf/2601.02954v4">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Large audio-language models have made rapid progress in recognizing what is present in an audio clip, but spatial audio-language understanding still lacks a clear task interface. A model must also decide where sound events occur, which semantic and spatial attributes belong to the same auditory object, how multiple objects are arranged, and whether a scene-level answer is physically plausible. We formalize this capability as audio scene analysis (ASA), a three-level problem spanning atomic perception, relational integration, and cognitive reasoning. We propose The World is Not Mono (TWNM), a framework that equips audio-language models with explicit spatial evidence. TWNM uses physically grounded First-Order Ambisonics (FOA) simulation for controllable supervision, learns slot-regularized spatial representations from multichannel audio, fuses them with semantic audio features, and trains with a progressive curriculum ending in preference optimization over metadata-derived correct answers and auxiliary format/evidence rewards. To operationalize ASA, we build a controlled benchmark from scene metadata, covering localization, attribute binding, spatial comparison, scene abduction, and counterfactual reasoning. On this benchmark, TWNM achieves 70.8% overall accuracy, 66.4% on spatial-family tasks, and 79.76% on mixed $\mathcal{L}_3$ scene-level QA under exact multiple-choice question answering (MCQA) scoring. We also audit monaural and binaural reference systems as diagnostic references with explicit audit labels, since they differ in spatial input, training interface, and output format. The supported claim is that a clearly defined ASA hierarchy, FOA-conditioned spatial representations, and metadata-grounded training enable controlled, auditable spatial audio-language reasoning, with STARSS23 providing a limited real-recording diagnostic.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>世界并非单声道：在大型音频-语言模型中实现空间理解</div>
+<div class="mono" style="margin-top:8px">大型音频-语言模型在识别音频片段中存在什么方面已取得快速进展，但空间音频-语言理解仍缺乏清晰的任务接口。模型还必须判断声音事件发生在何处、哪些语义与空间属性属于同一听觉对象、多个对象如何排列，以及场景级答案在物理上是否合理。我们将这一能力形式化为音频场景分析（ASA），一个涵盖原子感知、关系整合与认知推理的三层问题。我们提出“世界并非单声道”（TWNM）框架，为音频-语言模型提供显式空间证据。TWNM 使用基于物理的一阶 Ambisonics（FOA）仿真进行可控监督，从多声道音频中学习槽正则化空间表示，将其与语义音频特征融合，并采用渐进式课程训练，最终以基于元数据推导的正确答案及辅助格式/证据奖励进行偏好优化。为落地 ASA，我们基于场景元数据构建了一个受控基准，涵盖定位、属性绑定、空间比较、场景溯因与反事实推理。在该基准上，TWNM 在精确多项选择问答（MCQA）评分下取得 70.8% 的总体准确率、空间类任务 66.4%、混合 $\mathcal{L}_3$ 场景级问答 79.76%。我们还审计了单声道与双耳参考系统作为诊断参考，并附显式审计标签，因为它们在空间输入、训练接口与输出格式上存在差异。所支持的结论是：明确定义的 ASA 层级、以 FOA 为条件的空间表示以及基于元数据的训练，能够实现可控、可审计的空间音频-语言推理，STARSS23 提供了有限的真实录音诊断。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Large audio-language models recognize what is present in audio but lack a clear interface for spatial understanding, so this work formalizes audio scene analysis as a three-level problem spanning atomic perception, relational integration, and cognitive reasoning. The authors propose The World is Not Mono (TWNM), which uses physically grounded First-Order Ambisonics simulation for controllable supervision, learns slot-regularized spatial representations from multichannel audio, fuses them with semantic features, and trains with a progressive curriculum ending in preference optimization over metadata-derived answers with auxiliary format and evidence rewards. A controlled benchmark built from scene metadata covers localization, attribute binding, spatial comparison, scene abduction, and counterfactual reasoning, where TWNM reaches 70.8% overall accuracy, 66.4% on spatial-family tasks, and 79.76% on mixed scene-level QA under exact multiple-choice scoring, with monaural and binaural systems audited as diagnostic references and STARSS23 providing a limited real-recording check.</div>
+<div class="mono" style="margin-top:8px">大型音频语言模型在识别音频中存在什么方面进展迅速，但仍缺乏明确的空间音频语言理解任务接口，因此本文将该能力形式化为音频场景分析，即涵盖原子感知、关系整合与认知推理的三层问题。作者提出 The World is Not Mono（TWNM）框架，利用物理一致的一阶Ambisonics仿真提供可控监督，从多通道音频中学习槽正则化的空间表征并与语义音频特征融合，采用渐进式课程训练并以基于元数据正确答案的偏好优化收尾，辅以格式与证据奖励；同时基于场景元数据构建受控基准，覆盖定位、属性绑定、空间比较、场景溯因与反事实推理。在该基准上，TWNM在精确多项选择评分下取得70.8%的总体准确率、空间类任务66.4%、混合场景级问答79.76%，并将单声道与双声道参考系统作为带明确审计标签的诊断参照，STARSS23则作为有限的真实录音诊断。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Disentangling Channel Semantics in Vision Transformers via Token Decorrelation and Composition-Aware Modulation</div>
+<div class="meta-line">Authors: Daeun Kim, Hyesong Choi, Hyejin Park, Dongbo Min</div>
+<div class="meta-line">Venue: NeurIPS 2026</div>
+<div class="meta-line">First: 2026-11-07T05:59:28+00:00 · Latest: 2026-11-07T05:59:28+00:00</div>
+<div class="meta-line">Comments: Accepted at NeurIPS 2026. 32 pages, 12 figures</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2611.10497v1">Abs</a> · <a href="https://arxiv.org/pdf/2611.10497v1">PDF</a> · <a href="https://github.com/kimdanni/MuCa-ViT">Code1</a> · <a href="https://huggingface.co/huggingface">Code2</a> · <a href="https://huggingface.co/docs/hub/spaces">Code3</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Multi-channel images encode heterogeneous channel semantics aligned over a shared spatial structure, which requires models to jointly capture globally shared structure and channel-specific variations. Recent multi-channel Vision Transformers attempt to address this challenge by augmenting the [CLS] token with memory tokens to organize multi-channel representations under varying channel compositions. However, we find that these context tokens collapse onto a few dominant channels under high inter-channel redundancy, producing redundant representations and a biased global summary that fails to reliably support composition-aware channel interpretation. We propose MuCa-ViT (Multi-Channel Composition-Aware Vision Transformer), a unified framework that addresses these limitations through two coupled mechanisms. Factorial Token Learning (FTL) enforces token-level decorrelation among context tokens, encouraging the [CLS] token to capture globally shared semantics while memory tokens preserve complementary channel-specific cues. Channel Composition-Aware Modulation (CAM) uses the FTL-refined [CLS] as a semantic anchor to generate sample-wise modulation signals, which enable composition-aware interpretation of channels within a unified backbone rather than relying on static channel embeddings. Experiments on JUMP-CP, CHAMMI, and So2Sat show that MuCa-ViT outperforms prior multi-channel ViTs across all three benchmarks, and the magnitude of improvement aligns with the inter-channel redundancy of each dataset ($ρ\in [0.19, 0.77]$), validating the diagnostic analysis that motivates our design. Our code is available at https://github.com/kimdanni/MuCa-ViT .</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>通过令牌去相关与组合感知调制解耦视觉Transformer中的通道语义</div>
+<div class="mono" style="margin-top:8px">多通道图像编码了在共享空间结构上对齐的异构通道语义，这要求模型同时捕获全局共享结构和通道特定变化。近期的多通道视觉Transformer尝试通过用记忆令牌增强[CLS]令牌来应对这一挑战，以在不同通道组合下组织多通道表示。然而，我们发现这些上下文令牌在高通道间冗余下会坍缩到少数主导通道上，产生冗余表示和有偏的全局摘要，无法可靠地支持组合感知的通道解释。我们提出MuCa-ViT（多通道组合感知视觉Transformer），一个通过两个耦合机制解决这些局限的统一框架。因子化令牌学习（FTL）在上下文令牌之间强制令牌级去相关，鼓励[CLS]令牌捕获全局共享语义，同时记忆令牌保留互补的通道特定线索。通道组合感知调制（CAM）使用FTL精炼后的[CLS]作为语义锚点来生成样本级调制信号，从而在统一骨干内实现通道的组合感知解释，而非依赖静态通道嵌入。在JUMP-CP、CHAMMI和So2Sat上的实验表明，MuCa-ViT在所有三个基准上均优于先前的多通道ViT，且提升幅度与各数据集的通道间冗余度（$ρ\in [0.19, 0.77]$）一致，验证了驱动我们设计的诊断分析。我们的代码可在https://github.com/kimdanni/MuCa-ViT获取。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Multi-channel Vision Transformers that augment the [CLS] token with memory tokens can collapse those context tokens onto a few dominant channels when inter-channel redundancy is high, yielding redundant representations and a biased global summary that undermines composition-aware channel interpretation. The authors propose MuCa-ViT, which couples Factorial Token Learning, enforcing token-level decorrelation so the [CLS] token captures globally shared semantics while memory tokens retain channel-specific cues, with Channel Composition-Aware Modulation, which uses the refined [CLS] as a semantic anchor to generate sample-wise modulation signals for composition-aware interpretation within a unified backbone instead of static channel embeddings. On JUMP-CP, CHAMMI, and So2Sat, MuCa-ViT outperforms prior multi-channel ViTs on all three benchmarks, and the improvement magnitude tracks each dataset&#x27;s inter-channel redundancy (rho between 0.19 and 0.77), supporting the diagnostic analysis behind the design.</div>
+<div class="mono" style="margin-top:8px">多通道视觉Transformer通过为[CLS]令牌增加记忆令牌来组织多通道表示，但当通道间冗余较高时，这些上下文令牌会坍缩到少数主导通道上，产生冗余表示和有偏的全局摘要，难以可靠支持通道组合感知的解读。作者提出MuCa-ViT，将两项机制耦合：因子化令牌学习通过强制上下文令牌间的令牌级去相关，使[CLS]令牌捕获全局共享语义、记忆令牌保留互补的通道特有线索；通道组合感知调制则以精炼后的[CLS]作为语义锚点生成样本级调制信号，在统一骨干内实现通道组合感知的解读，而非依赖静态通道嵌入。在JUMP-CP、CHAMMI和So2Sat三个基准上，MuCa-ViT均优于现有多通道ViT，且提升幅度与各数据集的通道间冗余度（rho在[0.19, 0.77]之间）相一致，验证了驱动该设计的诊断分析。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Language models lack systematicity in generating and updating hypotheses</div>
+<div class="meta-line">Authors: Hua-Dong Xiong</div>
+<div class="meta-line">Venue: NeurIPS 2026</div>
+<div class="meta-line">First: 2026-05-07T08:24:54+00:00 · Latest: 2026-11-07T05:53:47+00:00</div>
+<div class="meta-line">Comments: Published at NeurIPS 2026</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2605.05851v2">Abs</a> · <a href="https://arxiv.org/pdf/2605.05851v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Large language models (LLMs) are increasingly applied to complex problems, from automated code debugging to science itself. Such problems require generating plausible hypotheses from sparse, noisy, and ambiguous data and updating them as more information arrives. Yet how closely LLMs approach optimal inductive reasoning remains unclear. We study this question in the classic number game, in which a learner infers a concept from a few ambiguous positive integers: $\{2, 16, 4, 8\}$, for example, is explained both by ``powers of 2&#x27;&#x27; and by ``numbers up to 20.&#x27;&#x27; We probe the concepts LLMs hypothesize from the observed examples and use their behavioral patterns to understand how they generate and update hypotheses. We measure the LLM posterior over hypotheses in three tasks (prediction, evaluation, and generation) and compare LLM behavior with a Bayesian model and with humans. LLMs favor narrower hypotheses than humans and show a robust evaluation--generation gap: in evaluation they select hypotheses more consistent with the observed examples, whereas in generation they propose narrower hypotheses that are more often rules. They also update poorly: as examples accumulate, their accuracy declines while their confidence grows. Thinking reduces, and can even reverse, the gap; it also broadens the hypotheses LLMs favor, raising accuracy while lowering confidence. Whereas prior studies have shown that LLMs are good hypothesis proposers, our results and further comparisons with the Bayesian model show that LLM inductive reasoning lacks coherence across the three tasks, suggesting that LLMs do not maintain a stable representation shared across tasks that make the same demand. Our results highlight a limitation of LLMs in inductive inference, particularly in settings such as science, where hypotheses must go beyond the data.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>语言模型在生成和更新假设时缺乏系统性</div>
+<div class="mono" style="margin-top:8px">大语言模型（LLM）正日益被应用于从自动代码调试到科学研究本身的复杂问题。此类问题需要从稀疏、含噪且模糊的数据中生成合理的假设，并随着更多信息的到来而更新这些假设。然而，LLM 在多大程度上接近最优归纳推理仍不清楚。我们在经典的数字游戏中研究这一问题：在该游戏中，学习者从几个模糊的正整数中推断出一个概念，例如 $\{2, 16, 4, 8\}$ 既可以由“2 的幂”解释，也可以由“不超过 20 的数”解释。我们探查 LLM 从观察到的示例中假设出的概念，并利用其行为模式来理解它们如何生成和更新假设。我们在三项任务（预测、评估和生成）中测量 LLM 对假设的后验分布，并将 LLM 的行为与贝叶斯模型和人类进行比较。LLM 比人类更偏好较窄的假设，并表现出稳健的评估—生成差距：在评估中，它们选择与观察到的示例更一致的假设；而在生成中，它们提出更窄、更常为规则的假设。它们的更新也很差：随着示例积累，其准确率下降而置信度上升。思考会缩小甚至逆转这一差距；它还会拓宽 LLM 偏好的假设，在提高准确率的同时降低置信度。尽管先前研究表明 LLM 是良好的假设提出者，但我们的结果以及与贝叶斯模型的进一步比较表明，LLM 的归纳推理在三项任务之间缺乏一致性，这表明 LLM 并未在具有相同要求的任务之间维持共享的稳定表征。我们的结果凸显了 LLM 在归纳推断中的局限，尤其是在科学等假设必须超越数据的场景中。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">This paper investigates whether large language models perform optimal inductive reasoning when generating and updating hypotheses from sparse, ambiguous data, a capability central to complex tasks such as code debugging and scientific discovery. Using the classic number game, the authors probe the hypotheses LLMs propose from ambiguous positive integers and measure the model&#x27;s posterior over hypotheses across three tasks (prediction, evaluation, and generation), comparing behavior with a Bayesian model and with humans. They find that LLMs favor narrower hypotheses than humans and exhibit a robust evaluation-generation gap, selecting example-consistent hypotheses in evaluation but proposing narrower, rule-like hypotheses in generation; moreover, as examples accumulate, accuracy declines while confidence grows. Thinking reduces or even reverses this gap and broadens favored hypotheses, raising accuracy while lowering confidence, and further comparisons with the Bayesian model show that LLM inductive reasoning lacks coherence across the three tasks, suggesting the models do not maintain a stable task-shared representation.</div>
+<div class="mono" style="margin-top:8px">该论文研究大语言模型在从稀疏、模糊数据中生成并更新假设时是否具备最优归纳推理能力，采用经典数字游戏作为任务，即学习者需从少数可作多种解释的正整数中推断出概念。作者探测模型提出的假设，并在预测、评估和生成三项任务中测量其后验分布，将其行为与贝叶斯模型和人类进行比较。结果显示，大语言模型比人类偏好更窄的假设，并表现出稳健的评估—生成差距：在评估中选择与示例更一致的假设，而在生成中提出更窄、更接近规则的假设；其更新能力也较差，随着示例增多，准确率下降而置信度上升。思维链会缩小甚至逆转该差距，并使模型偏好的假设更宽泛，从而提高准确率、降低置信度；与贝叶斯模型的进一步比较表明，大语言模型的归纳推理在三项任务间缺乏一致性，说明其并未维持跨任务的稳定共享表征。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Safer for Whom? A Systematic Exploration of AI Safety in Eating Disorder Interactions</div>
+<div class="meta-line">Authors: Jinyuan Wang, Minh Duc Chu, Frances Ross, Ellen Fitzsimmons-Craft, Kristina Lerman</div>
+<div class="meta-line">First: 2026-11-07T05:30:37+00:00 · Latest: 2026-11-07T05:30:37+00:00</div>
+<div class="meta-line">Comments: 23 pages, 7 figures, 2 tables</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2611.10488v1">Abs</a> · <a href="https://arxiv.org/pdf/2611.10488v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">AI assistants advise users about diet, exercise, and weight loss---areas in which unsafe guidance can worsen body dissatisfaction, dietary restriction, compulsive exercise, and other behaviors associated with eating disorders (EDs). Existing evaluations emphasize diagnostic accuracy, overtly harmful prompts, or synthetic scenarios, providing limited insight into whether models recognize implicit vulnerability in natural interactions or protect users consistently. We evaluate responses from three open-weight large language models to 100 questions sourced from an online pro-anorexia community. We grade responses using clinically informed criteria that extend a seven-dimensional taxonomy of ED-related harms. We also construct matched conditions in which questions are accompanied by information about the user varying race, gender, body mass index (BMI), and explicit ED vulnerability. Safety varies substantially across models and harm dimensions. High-risk responses are approximately twice as frequent without bios, suggesting that models do not consistently recognize vulnerability from language alone. Explicit signals of ED vulnerability improve safety by 10--14 points across models. Responses also differ significantly by race, gender, and BMI, with body size producing the largest disparities. These patterns are consistent with reliance on the stereotype that EDs primarily affect thin, White women, potentially leaving users outside this profile with less protective responses.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>对谁更安全？对进食障碍交互中AI安全性的系统性探索</div>
+<div class="mono" style="margin-top:8px">AI助手就饮食、运动和减重向用户提供建议——在这些领域，不安全的指导可能加重身体不满、饮食限制、强迫性运动以及与进食障碍（EDs）相关的其他行为。现有评估强调诊断准确性、明显有害的提示或合成场景，对模型能否在自然交互中识别隐性脆弱性或持续保护用户提供的洞见有限。我们评估了三个开放权重大语言模型对来自在线厌食症社区的100个问题的回答。我们使用基于临床的准则对回答进行评分，该准则扩展了ED相关伤害的七维分类法。我们还构建了匹配条件，在问题中附带关于用户的信息，变化种族、性别、体重指数（BMI）和明确的ED脆弱性。安全性在不同模型和伤害维度之间差异显著。没有个人简介时，高风险回答的频率约为两倍，表明模型不能仅从语言中一致地识别脆弱性。ED脆弱性的明确信号使各模型的安全性提高10–14个百分点。回答也因种族、性别和BMI而显著不同，其中体型造成的差异最大。这些模式与依赖ED主要影响瘦削白人女性的刻板印象一致，可能使该特征之外的用户获得保护性较弱的回答。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">This paper investigates whether AI assistants give unsafe diet, exercise, and weight-loss guidance to users vulnerable to eating disorders, since existing evaluations rely on diagnostic accuracy, overtly harmful prompts, or synthetic scenarios and reveal little about recognition of implicit vulnerability in natural interactions. The authors evaluated three open-weight large language models on 100 questions sourced from an online pro-anorexia community, grading responses with clinically informed criteria extending a seven-dimensional taxonomy of ED-related harms, and constructed matched conditions varying user race, gender, BMI, and explicit ED vulnerability. Safety varied substantially across models and harm dimensions; high-risk responses were roughly twice as frequent without bios, indicating models do not consistently infer vulnerability from language alone, while explicit ED signals improved safety by 10 to 14 points. Responses also differed significantly by race, gender, and BMI, with body size producing the largest disparities, consistent with reliance on the stereotype that EDs primarily affect thin White women and potentially leaving other users less protected.</div>
+<div class="mono" style="margin-top:8px">本文考察AI助手在饮食、运动和减重场景中是否提供安全建议，因为不安全指导可能加剧与进食障碍相关的行为，而现有评估多侧重诊断准确性、明显有害提示或合成场景，难以反映模型能否在自然交互中识别隐含脆弱性。作者评估了三个开放权重大语言模型对来自在线厌食社区的100个问题的回答，采用扩展七维进食障碍危害分类的临床知情标准进行评分，并构建匹配条件，改变用户种族、性别、BMI和明确的进食障碍脆弱性信息。结果显示安全性在不同模型和危害维度间差异显著；无个人简介时高风险回答频率约为有简介时的两倍，表明模型无法仅凭语言一致识别脆弱性，而明确的进食障碍信号使安全性提高10至14个百分点。回答还因种族、性别和BMI显著不同，体型造成的差异最大，这与依赖进食障碍主要影响瘦削白人女性的刻板印象一致，可能使该画像之外的用户获得较少保护性回应。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Spectral Ghost in Representation Learning: A Unified View from Component Analysis to Self-Supervised Learning</div>
+<div class="meta-line">Authors: Bo Dai, Na Li, Dale Schuurmans</div>
+<div class="meta-line">First: 2026-01-28T01:08:24+00:00 · Latest: 2026-11-07T05:20:13+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2601.20154v3">Abs</a> · <a href="https://arxiv.org/pdf/2601.20154v3">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Self-supervised learning (SSL) extracts representations from massive unlabeled data that transfer to a variety of downstream tasks. Its empirical success has produced a dizzying array of objectives and procedures, yet a clear understanding of what representation is desired, and why these seemingly different methods work, is still missing. In this paper, we develop a unified spectral framework for representation learning. We first show that a representation is sufficient for arbitrary downstream prediction with a linear head if it spans the spectral decomposition of the pointwise mutual information, which can be extracted purely from unlabeled data. This view organizes representation learning along two axes, the parametrization of the spectral representation (linear, energy-based, denoising, nonlinear, latent-variable, and multi-modal) and the learning objective for fitting it, under which a broad range of existing methods, including SimCLR, MoCo, BYOL, Barlow Twins, VICReg, DINO, MAE, JEPA, BERT, GPT, and CLIP, as well as classic PCA, CCA, Laplacian eigenmaps, LLE, and SNE, are recovered as particular combinations. The framework also clarifies optimization behaviors: the batch-size requirement is determined by whether the objective is unbiased, a consistent surrogate, or biased, rather than by contrastive vs. non-contrastive losses. Finally, the framework inspires new scalable algorithms and extends spectral representations to causal inference and reinforcement learning.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>表示学习中的谱幽灵：从成分分析到自监督学习的统一视角</div>
+<div class="mono" style="margin-top:8px">自监督学习（SSL）从海量无标签数据中提取表示，这些表示可迁移到各种下游任务。其经验上的成功催生了令人眼花缭乱的目标函数与流程，然而对于究竟需要何种表示、以及这些看似不同的方法为何有效，仍缺乏清晰的理解。本文为表示学习构建了一个统一的谱框架。我们首先证明，若一个表示张成逐点互信息的谱分解，则它足以通过线性头支持任意下游预测，而该谱分解可纯粹从无标签数据中提取。这一视角将表示学习沿两个轴组织起来：谱表示的参数化（线性、基于能量、去噪、非线性、隐变量与多模态）以及用于拟合它的学习目标；在此框架下，包括SimCLR、MoCo、BYOL、Barlow Twins、VICReg、DINO、MAE、JEPA、BERT、GPT和CLIP在内的广泛现有方法，以及经典的PCA、CCA、拉普拉斯特征映射、LLE和SNE，都被还原为特定的组合。该框架还阐明了优化行为：批大小需求取决于目标是 unbiased、一致的替代目标还是有偏的，而非取决于对比损失与非对比损失之分。最后，该框架启发了新的可扩展算法，并将谱表示扩展到因果推断与强化学习。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Self-supervised learning has produced many objectives and procedures whose underlying principles remain unclear, so this paper develops a unified spectral framework for representation learning. It shows that a representation is sufficient for arbitrary downstream linear prediction if it spans the spectral decomposition of pointwise mutual information, which can be extracted from unlabeled data, and organizes methods along two axes: the parametrization of the spectral representation (linear, energy-based, denoising, nonlinear, latent-variable, and multi-modal) and the learning objective used to fit it. Under this view, a broad range of methods, including SimCLR, MoCo, BYOL, Barlow Twins, VICReg, DINO, MAE, JEPA, BERT, GPT, CLIP, and classic PCA, CCA, Laplacian eigenmaps, LLE, and SNE, are recovered as particular combinations; the framework further clarifies that batch-size requirements depend on whether the objective is unbiased, a consistent surrogate, or biased rather than on contrastive versus non-contrastive losses, and it inspires new scalable algorithms and extensions to causal inference and reinforcement learning.</div>
+<div class="mono" style="margin-top:8px">自监督学习虽已取得广泛经验成功，但其众多目标与流程背后的原理仍不清晰，本文因此提出一个统一的谱框架来理解表示学习。该框架表明，若表示能够张成逐点互信息的谱分解（该分解可纯粹从无标签数据中提取），则它足以支持任意下游线性预测，并沿两个维度组织表示学习：谱表示的参数化形式以及用于拟合它的学习目标。在此视角下，SimCLR、MoCo、BYOL、Barlow Twins、VICReg、DINO、MAE、JEPA、BERT、GPT、CLIP 以及经典 PCA、CCA、拉普拉斯特征映射、LLE 和 SNE 等大量方法都被归结为特定组合；框架还澄清批大小需求取决于目标是无偏、一致替代还是有偏，而非对比式与非对比式损失之别，并启发了新的可扩展算法以及向因果推断和强化学习的扩展。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">From Detection to Understanding: TAR and TAR-Bench for Multi-Task Traffic Anomaly Reasoning</div>
+<div class="meta-line">Authors: Han Zhang, Yilin Zhao, Zaid Pervaiz Bhat, Zheng Tang, Varun Praveen, Vidya N. Murali, David C. Anastasiu, Tomasz Kornuta</div>
+<div class="meta-line">Venue: NeurIPS 2026</div>
+<div class="meta-line">First: 2026-08-10T23:40:07+00:00 · Latest: 2026-11-07T05:18:17+00:00</div>
+<div class="meta-line">Comments: Accepted to NeurIPS 2026, Evaluations and Datasets Track</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2608.10317v4">Abs</a> · <a href="https://arxiv.org/pdf/2608.10317v4">PDF</a> · <a href="https://huggingface.co/datasets/nvidia/PhysicalAI-Traffic-Anomaly-Reasoning">Code1</a> · <a href="https://huggingface.co/huggingface">Code2</a> · <a href="https://huggingface.co/docs/hub/spaces">Code3</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Detecting a traffic anomaly does not establish whether a video-language model can explain what happened, localize it in time, or identify its causes. We introduce TAR (Traffic Anomaly Reasoning) and TAR-Bench, paired resources for training and evaluating these complementary capabilities across 10 tasks spanning question answering, temporal reasoning, and scene understanding. TAR contains 44,040 automatically generated annotations with chain-of-thought traces for 3,670 CCTV videos from eight public datasets. TAR-Bench provides 960 human-curated annotations for 80 held-out clips from 17 public YouTube videos. Evaluation of eleven vision-language models and analysis of fine-tuned outputs reveal temporal, causal, and descriptive errors not captured by closed-form question-answering accuracy. Training on all 10 tasks raises mean benchmark scores from 34.3 to 55.7 for Cosmos-Reason2-8B and from 30.9 to 53.9 for Qwen3-VL-8B-Instruct. These results support joint training across complementary tasks, while highlighting persistent limitations in temporal precision and causal attribution. TAR and TAR-Bench serve as the official training and in-domain evaluation resources for AI City Challenge 2026 Track~3. The dataset is available under CC-BY-4.0 at https://huggingface.co/datasets/nvidia/PhysicalAI-Traffic-Anomaly-Reasoning.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>从检测到理解：用于多任务交通异常推理的TAR与TAR-Bench</div>
+<div class="mono" style="margin-top:8px">检测到交通异常并不能确定视频语言模型能否解释发生了什么、在时间上定位异常或识别其原因。我们提出TAR（交通异常推理）和TAR-Bench，这是一对配套资源，用于在涵盖问答、时间推理和场景理解的10项任务上训练和评估这些互补能力。TAR包含44,040条自动生成的标注及思维链轨迹，覆盖来自八个公开数据集的3,670段CCTV视频。TAR-Bench提供960条人工整理的标注，覆盖来自17个公开YouTube视频的80段留出片段。对十一个视觉语言模型的评估以及对微调输出的分析揭示了封闭式问答准确率未能捕捉的时间、因果和描述性错误。在全部10项任务上训练使Cosmos-Reason2-8B的平均基准分数从34.3提升至55.7，使Qwen3-VL-8B-Instruct从30.9提升至53.9。这些结果支持跨互补任务的联合训练，同时凸显了在时间精度和因果归因方面持续存在的局限。TAR和TAR-Bench是AI City Challenge 2026 Track~3的官方训练和域内评估资源。该数据集以CC-BY-4.0许可发布于https://huggingface.co/datasets/nvidia/PhysicalAI-Traffic-Anomaly-Reasoning。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">The paper argues that detecting a traffic anomaly does not show whether a video-language model can explain, temporally localize, or attribute causes of the event, and it introduces TAR and TAR-Bench as paired resources for training and evaluating these capabilities across 10 tasks covering question answering, temporal reasoning, and scene understanding. TAR provides 44,040 automatically generated chain-of-thought annotations for 3,670 CCTV videos from eight public datasets, while TAR-Bench offers 960 human-curated annotations for 80 held-out clips from 17 public YouTube videos. Evaluating eleven vision-language models and analyzing fine-tuned outputs exposed temporal, causal, and descriptive errors that closed-form QA accuracy misses; training on all 10 tasks raised mean benchmark scores from 34.3 to 55.7 for Cosmos-Reason2-8B and from 30.9 to 53.9 for Qwen3-VL-8B-Instruct, supporting joint multi-task training while revealing persistent weaknesses in temporal precision and causal attribution.</div>
+<div class="mono" style="margin-top:8px">该论文指出，检测到交通异常并不能说明视频语言模型能否解释事件、进行时间定位或识别成因，为此提出了配套的训练与评测资源TAR和TAR-Bench，覆盖问答、时间推理和场景理解共10项任务。TAR包含来自八个公开数据集的3,670段CCTV视频的44,040条自动生成的思维链标注，TAR-Bench则提供来自17个公开YouTube视频的80段留出片段的960条人工标注。对十一个视觉语言模型的评测及对微调输出的分析揭示了封闭式问答准确率无法反映的时间、因果和描述性错误；在全部10项任务上训练使Cosmos-Reason2-8B的平均基准分数从34.3提升至55.7，使Qwen3-VL-8B-Instruct从30.9提升至53.9，表明跨互补任务联合训练有效，同时暴露出时间精度和因果归因方面的持续局限。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">They Can See It but Not Say It: Iterative Self Knowledge Re-expression in Visual Reasoning Relative Pose Identification</div>
+<div class="meta-line">Authors: Mengyu Wang, Ken Deng, Yftah Ziser, Shay B. Cohen, Tiejun Ma</div>
+<div class="meta-line">Venue: NeurIPS 2026 Oral</div>
+<div class="meta-line">First: 2026-11-07T05:12:17+00:00 · Latest: 2026-11-07T05:12:17+00:00</div>
+<div class="meta-line">Comments: Accepted as NeurIPS 2026 Oral</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2611.10483v1">Abs</a> · <a href="https://arxiv.org/pdf/2611.10483v1">PDF</a> · <a href="https://github.com/astudentuser/Codes_of_SKR-ID">Code1</a> · <a href="https://huggingface.co/huggingface">Code2</a> · <a href="https://huggingface.co/docs/hub/spaces">Code3</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">The task of visual reasoning relative pose identification (VRRPI) has exposed critical weaknesses in the multi-view 3D spatial reasoning capabilities of modern vision-language models (VLMs). We present a systematic analysis of VLMs&#x27; behavior in VRRPI, uncovering stable output biases where VLMs disproportionately predict specific motion patterns regardless of visual evidence. To mitigate these inherent biases, we propose self knowledge re-expression with iterative debiasing (SKR-ID), an annotation-free pipeline that adapts VLMs for VRRPI using only randomly extracted unannotated image pairs. SKR-ID transitions VLMs&#x27; output mechanism from generic next-token prediction to task-optimized classification heads. The pipeline proceeds in two stages: (1) a cold-start initialization using debiasing object-centric prompts to anchor motion inference in 2D visual evidence; and (2) a recursive logit-ranking mechanism that enforces statistical parity by using the median logit value as a dynamic threshold. Experimental evaluation across frontier VLMs on standard benchmarks demonstrates that SKR-ID significantly mitigates systematic biases. Our method improves open-source VLMs&#x27; Macro-F1 scores from 35.0-45.4% to 53.7-58.0%, without using any annotated data. These results show that SKR-ID can effectively improve 3D reasoning performance from a severely collapsed baseline. The code is publicly available at https://github.com/astudentuser/Codes_of_SKR-ID.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>他们能看到却说不出来：视觉推理相对位姿识别中的迭代式自我知识再表达</div>
+<div class="mono" style="margin-top:8px">视觉推理相对位姿识别（VRRPI）任务暴露了现代视觉语言模型（VLMs）在多视图3D空间推理能力上的关键弱点。我们对VLMs在VRRPI中的行为进行了系统分析，揭示了稳定的输出偏差：无论视觉证据如何，VLMs都会不成比例地预测特定的运动模式。为缓解这些固有偏差，我们提出了迭代去偏的自我知识再表达（SKR-ID），这是一种无需标注的流程，仅使用随机抽取的未标注图像对即可使VLMs适配VRRPI。SKR-ID将VLMs的输出机制从通用的下一词元预测转变为任务优化的分类头。该流程分两个阶段进行：（1）使用去偏的以对象为中心的提示进行冷启动初始化，将运动推断锚定在2D视觉证据上；（2）递归的logit排序机制，通过使用logit中值作为动态阈值来强制实现统计均等。在标准基准上对前沿VLMs的实验评估表明，SKR-ID显著缓解了系统性偏差。我们的方法在未使用任何标注数据的情况下，将开源VLMs的Macro-F1分数从35.0-45.4%提升至53.7-58.0%。这些结果表明，SKR-ID能够从严重崩溃的基线有效提升3D推理性能。代码已公开于https://github.com/astudentuser/Codes_of_SKR-ID。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Vision-language models (VLMs) perform poorly on visual reasoning relative pose identification (VRRPI), and this work systematically analyzes their behavior to uncover stable output biases in which models disproportionately predict specific motion patterns regardless of visual evidence. To address these biases, the authors propose self knowledge re-expression with iterative debiasing (SKR-ID), an annotation-free pipeline that uses only randomly extracted unannotated image pairs and shifts VLMs from generic next-token prediction to task-optimized classification heads, proceeding through a cold-start initialization with debiasing object-centric prompts to anchor motion inference in 2D visual evidence and a recursive logit-ranking mechanism that enforces statistical parity using the median logit value as a dynamic threshold. Experiments across frontier VLMs on standard benchmarks show that SKR-ID substantially mitigates systematic biases, improving open-source VLMs&#x27; Macro-F1 scores from 35.0-45.4% to 53.7-58.0% without any annotated data, indicating effective recovery of 3D reasoning performance from a severely collapsed baseline.</div>
+<div class="mono" style="margin-top:8px">本文分析了视觉语言模型（VLM）在视觉推理相对位姿识别（VRRPI）任务上表现不佳的原因，发现模型存在稳定的输出偏差，无论视觉证据如何都会过度预测特定的运动模式。为此，作者提出自知识再表达与迭代去偏（SKR-ID）方法，这是一种无需标注的流程，仅使用随机抽取的无标注图像对，将VLM从通用的下一词预测转变为面向任务的分类头，流程分为两个阶段：一是使用去偏的以对象为中心的提示进行冷启动初始化，将运动推断锚定在二维视觉证据上；二是采用递归logit排序机制，以logit中位数作为动态阈值来强制统计均衡。在标准基准上对前沿VLM的实验表明，SKR-ID显著缓解了系统性偏差，在完全不使用标注数据的情况下将开源VLM的Macro-F1从35.0-45.4%提升至53.7-58.0%，证明该方法能有效改善严重退化的基线3D推理性能。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Partition-Aware Unlearning for Removing Spurious Correlations in Large Vision-Language Models</div>
+<div class="meta-line">Authors: Aditi Sarker, Nazreen Shah, Rafi Ibn Sultan, Rhongho Jang, Dongxiao Zhu, Prashant Khanduri</div>
+<div class="meta-line">First: 2026-08-30T19:42:47+00:00 · Latest: 2026-11-07T04:57:35+00:00</div>
+<div class="meta-line">Comments: 30 pages, 11 figures</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2608.29996v2">Abs</a> · <a href="https://arxiv.org/pdf/2608.29996v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Large Vision-Language Models (LVLMs) achieve strong performance across many multimodal tasks; however, they often exploit spurious object-background correlations, resulting in predictions driven by contextual shortcuts rather than object-relevant visual evidence. Despite growing interest in hallucination and robustness evaluation, existing benchmarks provide limited control over whether model predictions are grounded in the target object or induced by correlated background cues. In this work, we introduce PURGE (\underline{P}artition-aware \underline{U}nlearning for \underline{R}emoving spurious-correlation \underline{G}enerated \underline{E}rrors), a framework for constructing, benchmarking, and mitigating spurious-correlation-induced failures in LVLMs. The framework consists of: -- (1) Structured dataset construction wherein we develop three complementary structured data construction strategies that partition examples by object-relevant evidence and spurious background cues, enabling controlled diagnosis of shortcut reliance; and -- (2) Partition-aware unlearning, which uses these partitions to selectively remove spurious object-background associations while preserving object-based reasoning. We evaluate the \algo~framework across multiple LVLMs, including LLaVA-1.6-7B, Qwen3-VL-8B-Instruct, and Qwen3.5-9B, together with CLIP as a vision-language encoder, on a diverse suite of benchmarks, including CHAIR, POPE, Causal-HalBench, MM-SpuBench, AMBER, MMHal, and Waterbirds. Our results show that PURGE consistently reduces hallucinations and spurious-correlation-driven errors while maintaining or improving overall performance in most evaluated settings, providing both a reusable evaluation protocol and an effective mitigation framework for more reliable LVLMs.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>面向大视觉语言模型中虚假关联移除的分区感知遗忘</div>
+<div class="mono" style="margin-top:8px">大视觉语言模型（LVLMs）在许多多模态任务上取得了强劲性能；然而，它们常常利用虚假的物体-背景关联，导致预测由上下文捷径而非与物体相关的视觉证据驱动。尽管对幻觉和鲁棒性评估的兴趣日益增长，现有基准对模型预测是建立在目标物体之上还是由相关背景线索诱导的控制有限。在本工作中，我们提出 PURGE（用于移除虚假关联生成错误的分区感知遗忘）框架，用于构建、基准测试和缓解 LVLMs 中虚假关联引发的失败。该框架包括：--（1）结构化数据集构建，其中我们开发了三种互补的结构化数据构建策略，按物体相关证据和虚假背景线索对样本进行分区，从而能够对捷径依赖进行受控诊断；以及 --（2）分区感知遗忘，利用这些分区选择性地移除虚假的物体-背景关联，同时保留基于物体的推理。我们在多个 LVLMs 上评估该框架，包括 LLaVA-1.6-7B、Qwen3-VL-8B-Instruct 和 Qwen3.5-9B，以及作为视觉语言编码器的 CLIP，在包括 CHAIR、POPE、Causal-HalBench、MM-SpuBench、AMBER、MMHal 和 Waterbirds 在内的多样化基准套件上。我们的结果表明，PURGE 在大多数评估设置中持续减少幻觉和虚假关联驱动的错误，同时保持或提升整体性能，为更可靠的 LVLMs 提供了可复用的评估协议和有效的缓解框架。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Large vision-language models often rely on spurious object-background correlations, producing predictions driven by contextual shortcuts rather than object-relevant evidence, and existing benchmarks offer limited control over whether predictions are grounded in the target object or induced by correlated background cues. The authors propose PURGE, a framework combining three structured data construction strategies that partition examples by object-relevant evidence and spurious background cues with a partition-aware unlearning procedure that selectively removes spurious object-background associations while preserving object-based reasoning. Evaluated on LLaVA-1.6-7B, Qwen3-VL-8B-Instruct, Qwen3.5-9B, and CLIP across CHAIR, POPE, Causal-HalBench, MM-SpuBench, AMBER, MMHal, and Waterbirds, PURGE consistently reduces hallucinations and spurious-correlation-driven errors while maintaining or improving overall performance in most settings.</div>
+<div class="mono" style="margin-top:8px">大型视觉语言模型常利用虚假的物体-背景相关性，使预测由上下文捷径而非与物体相关的视觉证据驱动，而现有基准难以控制预测究竟源于目标物体还是相关背景线索。作者提出 PURGE 框架，结合三种结构化数据构建策略（按物体相关证据与虚假背景线索划分样本）以及分区感知遗忘方法，选择性移除虚假的物体-背景关联，同时保留基于物体的推理能力。在 LLaVA-1.6-7B、Qwen3-VL-8B-Instruct、Qwen3.5-9B 及 CLIP 上，于 CHAIR、POPE、Causal-HalBench、MM-SpuBench、AMBER、MMHal 和 Waterbirds 等基准进行评测，结果表明 PURGE 在多数设置下持续减少幻觉和虚假相关性导致的错误，同时保持或提升整体性能。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Ghosted Layers: Unconstrained Activation Alignment for Recovering Layer-Pruned LLMs</div>
+<div class="meta-line">Authors: Vincent-Daniel Yun, Junhyuk Jo, Sai Praneeth Karimireddy, Sunwoo Lee</div>
+<div class="meta-line">Venue: NeurIPS 2026</div>
+<div class="meta-line">First: 2026-05-15T00:15:16+00:00 · Latest: 2026-11-07T04:37:41+00:00</div>
+<div class="meta-line">Comments: NeurIPS 2026 Main Accepted</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2605.15491v3">Abs</a> · <a href="https://arxiv.org/pdf/2605.15491v3">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Layer pruning removes entire Transformer decoder blocks from large language models, but introduces a mismatch between the hidden state received by the next surviving layer and the distribution it was trained to process, leading to significant performance degradation. We propose Ghosted Layers, a training-free recovery module that addresses this issue by solving a boundary activation alignment problem. Our method derives a closed-form optimal linear operator from a small calibration set to reconstruct the activation discrepancy introduced by the pruned layers. We show that this solution corresponds to the unconstrained optimum of the alignment objective, whereas LinearPatch is restricted to a fixed basis symmetric operator family. Across multiple LLM backbones, pruning strategies, and pruning depths, Ghosted Layers outperforms prior training-free recovery methods in accuracy and perplexity in most settings while preserving the efficiency benefits of layer pruning.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>幽灵层：用于恢复层剪枝LLM的无约束激活对齐</div>
+<div class="mono" style="margin-top:8px">层剪枝从大语言模型中移除整个Transformer解码器块，但会引入下一存活层所接收的隐藏状态与其训练时所处理的分布之间的不匹配，导致显著的性能下降。我们提出幽灵层（Ghosted Layers），一种无需训练的恢复模块，通过求解边界激活对齐问题来解决该问题。我们的方法从一个小型校准集中推导出闭式最优线性算子，以重建由被剪枝层引入的激活差异。我们证明该解对应于对齐目标的未约束最优解，而LinearPatch则被限制在固定基对称算子族中。在多种LLM主干、剪枝策略和剪枝深度下，幽灵层在大多数设置中在准确率和困惑度上优于先前的无需训练恢复方法，同时保留了层剪枝的效率优势。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Layer pruning removes entire Transformer decoder blocks from large language models but creates a mismatch between the hidden state received by the next surviving layer and the distribution it was trained on, causing substantial performance degradation. The authors propose Ghosted Layers, a training-free recovery module that frames this as a boundary activation alignment problem and derives a closed-form optimal linear operator from a small calibration set to reconstruct the activation discrepancy introduced by the pruned layers; they show this solution is the unconstrained optimum of the alignment objective, whereas LinearPatch is limited to a fixed basis symmetric operator family. Across multiple LLM backbones, pruning strategies, and pruning depths, Ghosted Layers outperforms prior training-free recovery methods in accuracy and perplexity in most settings while retaining the efficiency benefits of layer pruning.</div>
+<div class="mono" style="margin-top:8px">层剪枝会从大语言模型中移除整个 Transformer 解码器块，但会导致下一个保留层接收到的隐藏状态与其训练时所处理的分布不匹配，从而造成显著的性能下降。作者提出 Ghosted Layers，这是一种无需训练的恢复模块，将问题建模为边界激活对齐问题，并从小规模校准集中推导出闭式最优线性算子，以重建被剪枝层引入的激活偏差；他们证明该解是对齐目标的無约束最优解，而 LinearPatch 则受限于固定基的对称算子族。在多种 LLM 主干、剪枝策略和剪枝深度下，Ghosted Layers 在多数设置中在准确率和困惑度上优于先前的无需训练恢复方法，同时保留了层剪枝的效率优势。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">DriveMind: Mind-Evolving Belief Tracking for Closed-Loop Autonomous Driving</div>
+<div class="meta-line">Authors: Yan Shi, Kehua Chen, Jiarui Qi, Yihong Tang, Haicheng Liao, Yinhai Wang</div>
+<div class="meta-line">Venue: Neurips 2026</div>
+<div class="meta-line">First: 2026-10-23T02:13:50+00:00 · Latest: 2026-11-07T04:30:32+00:00</div>
+<div class="meta-line">Comments: Accepted by Neurips 2026</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.32069v2">Abs</a> · <a href="https://arxiv.org/pdf/2610.32069v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Recent multimodal large language models (MLLMs) can perceive a traffic scene, reason about it, and propose a driving action within a single model. However, existing MLLM-based drivers reason from scratch at each frame and commit to a single explanation, discarding earlier hypotheses about the scene. When the scene is ambiguous, the agent locks in on the wrong interpretation and acts on it before evidence accumulates. In this paper, we propose DriveMind, an MLLM-based driving framework that keeps several hypotheses about the scene alive at the same time and updates their weights as new frames arrive. Inspired by particle filtering, DriveMind propagates each hypothesis through a VLM, scores it against the current observation, and resamples to maintain diversity. On Bench2Drive, adding belief tracking to the same driving pipeline improves the Driving Score (DS) from 68.50 to 81.37 and the Success Rate (SR) from 41.36% to 54.09%. The largest gains occur on ambiguous scenarios such as unsignalized intersections (+20.0 DS) and oncoming-traffic interactions (+20.5 DS). Beyond the overall metrics, DriveMind also improves fine-grained interactive driving abilities such as merging, emergency braking, and give-way.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>DriveMind：面向闭环自动驾驶的心智演化信念跟踪</div>
+<div class="mono" style="margin-top:8px">近期多模态大语言模型（MLLMs）能够在单一模型中感知交通场景、对其进行推理并提出驾驶动作。然而，现有基于MLLM的驾驶器在每一帧都从头推理并锁定单一解释，丢弃了先前关于场景的假设。当场景存在歧义时，智能体在证据积累之前就锁定错误解释并据此行动。本文提出DriveMind，一种基于MLLM的驾驶框架，同时保持关于场景的多个假设，并随着新帧到来更新其权重。受粒子滤波启发，DriveMind通过VLM传播每个假设，依据当前观测对其打分，并重采样以保持多样性。在Bench2Drive上，将信念跟踪加入同一驾驶流水线后，驾驶得分（DS）从68.50提升至81.37，成功率（SR）从41.36%提升至54.09%。最大增益出现在无信号交叉口（+20.0 DS）和对向来车交互（+20.5 DS）等歧义场景中。除整体指标外，DriveMind还提升了汇入、紧急制动和让行等细粒度交互驾驶能力。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Existing MLLM-based driving systems reason from scratch at each frame and commit to a single interpretation, so in ambiguous scenes they can lock onto a wrong hypothesis and act on it before evidence accumulates. DriveMind addresses this by maintaining multiple hypotheses about the scene simultaneously and updating their weights as new frames arrive, using a particle-filter-inspired procedure in which each hypothesis is propagated through a VLM, scored against the current observation, and resampled to preserve diversity. On Bench2Drive, adding belief tracking to the same driving pipeline raises the Driving Score from 68.50 to 81.37 and the Success Rate from 41.36% to 54.09%, with the largest gains on ambiguous scenarios such as unsignalized intersections (+20.0 DS) and oncoming-traffic interactions (+20.5 DS), and it also improves fine-grained interactive behaviors including merging, emergency braking, and give-way.</div>
+<div class="mono" style="margin-top:8px">现有基于多模态大语言模型的驾驶系统在每一帧都从头推理并只锁定一种解释，因此在场景存在歧义时容易在证据积累之前就固守错误假设并据此行动。DriveMind 通过同时保留关于场景的多个假设并随新帧到来更新其权重来解决这一问题，其方法受粒子滤波启发，将每个假设经由视觉语言模型传播，与当前观测进行打分，并通过重采样保持多样性。在 Bench2Drive 上，在同一驾驶流程中加入信念跟踪后，驾驶得分从 68.50 提升至 81.37，成功率从 41.36% 提升至 54.09%，增益最大的是无信号交叉口（+20.0 DS）和对向车流交互（+20.5 DS）等歧义场景，同时该方法还改善了汇入、紧急制动和让行等细粒度交互驾驶能力。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">SpreadsheetBench 2: Evaluating Agents on End-to-End Business Spreadsheet Workflows</div>
+<div class="meta-line">Authors: Jian Zhu, Yuzheng Zhang, Zeyao Ma, Bohan Zhang, Armin Schoepf, Daniel Woloch, Peter Yiliu Wang, Guangyu Robert Yang, Samuel Jacob, Siddharth Nagisetty, Abhiram Chundru, Jean Lin, Spencer Mateega, Jing Zhang</div>
+<div class="meta-line">First: 2026-06-29T08:33:52+00:00 · Latest: 2026-11-07T04:18:13+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2606.29955v2">Abs</a> · <a href="https://arxiv.org/pdf/2606.29955v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a> · <a href="https://spreadsheetbench.github.io/">Project1</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Spreadsheets are widely used for business analysis, financial modeling, reporting, and decision-making. However, most existing spreadsheet benchmarks evaluate isolated operations such as single-formula generation or local cell edits, and therefore fail to capture end-to-end workflows in realistic business settings. We introduce \textsc{SpreadsheetBench 2}, a workflow-level benchmark for spreadsheet agents that covers three task categories: generation, debugging, and visualization. The benchmark is constructed from authentic business data, including financial reports and corporate filings, and is annotated and validated by domain experts. The benchmark contains 321 tasks; each instance averages 11.8 worksheets and requires 593.5 cell modifications, reflecting large multi-sheet workbooks with cross-sheet dependencies. We evaluate eight frontier large language models under a unified multi-turn agent scaffold, and additionally include several LLM-based spreadsheet products as complementary baselines. Results show that current systems remain far from reliable on real-world workflows: the best model achieves 34.89\% overall task accuracy, and debugging accuracy is as low as 12.00\%. Trajectory analysis and a failure taxonomy further indicate that insufficient spreadsheet inspection and incorrect target-cell selection are the dominant bottlenecks. Together, these findings position \textsc{SpreadsheetBench 2} as a challenging testbed for advancing reliable spreadsheet automation. Project page: https://spreadsheetbench.github.io/</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>SpreadsheetBench 2：评估智能体在端到端商业电子表格工作流中的表现</div>
+<div class="mono" style="margin-top:8px">电子表格广泛用于商业分析、财务建模、报告和决策。然而，现有大多数电子表格基准仅评估孤立操作，如单公式生成或局部单元格编辑，因此无法捕捉真实商业环境中的端到端工作流。我们提出\textsc{SpreadsheetBench 2}，一个面向电子表格智能体的工作流级基准，涵盖三类任务：生成、调试和可视化。该基准基于真实商业数据构建，包括财务报告和公司申报文件，并由领域专家标注和验证。基准包含321个任务；每个实例平均有11.8个工作表，需要593.5次单元格修改，反映了具有跨表依赖的大型多工作表工作簿。我们在统一的多轮智能体框架下评估了八个前沿大语言模型，并额外纳入若干基于LLM的电子表格产品作为补充基线。结果表明，当前系统在真实工作流上仍远未达到可靠水平：最佳模型的总体任务准确率为34.89\%，调试准确率低至12.00\%。轨迹分析和失败分类进一步表明，电子表格检查不足和目标单元格选择错误是主要瓶颈。综上，这些发现使\textsc{SpreadsheetBench 2}成为推进可靠电子表格自动化的具有挑战性的测试平台。项目页面：https://spreadsheetbench.github.io/</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Existing spreadsheet benchmarks mostly test isolated operations such as single-formula generation or local cell edits, so they do not capture the end-to-end workflows found in realistic business settings. To address this, the authors introduce SpreadsheetBench 2, a workflow-level benchmark for spreadsheet agents covering generation, debugging, and visualization, built from authentic business data such as financial reports and corporate filings and annotated and validated by domain experts; it contains 321 tasks, with each instance averaging 11.8 worksheets and requiring 593.5 cell modifications, reflecting large multi-sheet workbooks with cross-sheet dependencies. Eight frontier large language models are evaluated under a unified multi-turn agent scaffold, with several LLM-based spreadsheet products included as complementary baselines. Results show current systems remain far from reliable: the best model reaches 34.89% overall task accuracy and debugging accuracy is as low as 12.00%, while trajectory analysis and a failure taxonomy identify insufficient spreadsheet inspection and incorrect target-cell selection as the dominant bottlenecks.</div>
+<div class="mono" style="margin-top:8px">现有电子表格基准大多评估单公式生成或局部单元格编辑等孤立操作，无法反映真实业务场景中的端到端工作流。为此，作者提出 SpreadsheetBench 2，这是一个面向电子表格智能体的工作流级基准，涵盖生成、调试和可视化三类任务，基于财务报告和企业申报文件等真实业务数据构建，并由领域专家标注和验证；该基准包含 321 个任务，每个实例平均涉及 11.8 个工作表、需要 593.5 次单元格修改，体现了具有跨表依赖的大型多工作表工作簿。研究在统一的多轮智能体框架下评估了八个前沿大语言模型，并纳入若干基于大模型的电子表格产品作为补充基线。结果显示当前系统在真实工作流上仍远不可靠：最佳模型的整体任务准确率为 34.89%，调试准确率低至 12.00%，轨迹分析和失败分类进一步表明，表格检查不足和目标单元格选择错误是主要瓶颈。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Inference-time Alignment via Sparse Junction Steering</div>
+<div class="meta-line">Authors: Runyi Hu, Jie Zhang, Shiqian Zhao, Jiale Meng, Jiwei Li, Jason Zeng, Ming Wu, Michael Heinrich, Yonggang Wen, Tianwei Zhang</div>
+<div class="meta-line">Venue: NeurIPS Spotlight</div>
+<div class="meta-line">First: 2026-01-30T08:40:47+00:00 · Latest: 2026-11-07T04:18:08+00:00</div>
+<div class="meta-line">Comments: Neural Information Processing Systems (NeurIPS) 2026, Spotlight</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2602.21215v2">Abs</a> · <a href="https://arxiv.org/pdf/2602.21215v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Token-level steering has emerged as a pivotal approach for inference-time alignment, enabling fine-grained control over large language models (LLMs) by modulating their output distributions without parameter updates. While effective, existing methods rely on dense intervention at every decoding step. This persistent manipulation not only incurs substantial computational overhead but also risks compromising generation quality by excessively drifting from the model&#x27;s intrinsic distribution. In this work, we show that dense intervention is unnecessary and propose Sparse Inference-time Alignment (SIA), which performs sparse junction steering, intervening only at critical decision points along the generation trajectory. Our key insight is that high-entropy junctions are empirically consistent with pivotal decision points in the generation trajectory and are particularly susceptible to misalignment, suggesting that these points benefit from alignment-related reward signal. Extensive experiments across different model families and alignment objectives show that steering only 20%-80% of tokens achieves the superior alignment-efficiency trade-offs. For strong base models such as Qwen3, intervening on as few as 20% of tokens matches or even surpasses heavily post-trained instruct models. This sparsity enables stronger guidance while better preserving the model&#x27;s native distribution, integrates seamlessly with search-based methods (e.g., Best-of-N), and improves efficiency by reducing the required sampling budget while yielding practical wall-clock speedups under matched-quality comparisons.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>通过稀疏交汇点引导的推理时对齐</div>
+<div class="mono" style="margin-top:8px">Token级引导已成为推理时对齐的关键方法，通过调节大语言模型（LLM）的输出分布而无需更新参数，实现对模型的细粒度控制。现有方法虽然有效，但依赖于在每个解码步骤进行密集干预。这种持续操作不仅带来大量计算开销，还可能因过度偏离模型内在分布而损害生成质量。在本工作中，我们表明密集干预并无必要，并提出稀疏推理时对齐（SIA），其执行稀疏交汇点引导，仅在生成轨迹上的关键决策点进行干预。我们的关键洞见是：高熵交汇点在经验上与生成轨迹中的关键决策点一致，且特别容易发生错位，这表明这些点能够从与对齐相关的奖励信号中获益。跨不同模型家族和对齐目标的广泛实验表明，仅引导20%-80%的token即可实现更优的对齐-效率权衡。对于Qwen3等强基础模型，仅干预20%的token即可匹配甚至超越经过大量后训练的指令模型。这种稀疏性使得在更好地保留模型原生分布的同时实现更强引导，可与基于搜索的方法（如Best-of-N）无缝集成，并通过减少所需采样预算提高效率，同时在质量匹配比较下带来实际墙钟时间加速。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Token-level steering is an effective way to align large language models at inference time without parameter updates, but existing methods intervene densely at every decoding step, which adds computational overhead and risks drifting too far from the model&#x27;s intrinsic distribution. This work proposes Sparse Inference-time Alignment (SIA), which performs sparse junction steering by intervening only at high-entropy junctions that empirically coincide with pivotal, misalignment-susceptible decision points in the generation trajectory. Experiments across different model families and alignment objectives show that steering only 20%-80% of tokens yields better alignment-efficiency trade-offs; for strong base models such as Qwen3, intervening on as few as 20% of tokens matches or surpasses heavily post-trained instruct models, and the approach integrates with search-based methods like Best-of-N while reducing sampling budget and yielding wall-clock speedups under matched-quality comparisons.</div>
+<div class="mono" style="margin-top:8px">该论文针对大语言模型推理时对齐中逐token密集干预带来的计算开销以及过度偏离模型原生分布、损害生成质量的问题，指出在每个解码步骤都进行干预并无必要。作者提出稀疏推理时对齐方法（SIA），仅在生成轨迹中的高熵交汇点进行稀疏引导，其核心依据是高熵交汇点在经验上与生成过程中的关键决策点一致，且这些位置更易出现失配。跨模型家族与多种对齐目标的实验表明，仅对20%至80%的token进行引导即可取得更优的对齐与效率权衡；对于Qwen3等强基座模型，仅干预20%的token即可匹配甚至超越经过大量后训练的instruct模型。该方法在保持模型原生分布的同时支持更强引导，可与Best-of-N等搜索式方法无缝结合，并在同等质量下减少采样预算、带来实际运行时间加速。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Represented but Not Used: Value-Policy Dissociation in LLM Agents</div>
+<div class="meta-line">Authors: Yuzhang Luo, Mohamed Aghzal, Liangming Pan, Ziyu Yao</div>
+<div class="meta-line">First: 2026-11-07T04:17:31+00:00 · Latest: 2026-11-07T04:17:31+00:00</div>
+<div class="meta-line">Comments: 19 pages, 5 figures</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2611.10457v1">Abs</a> · <a href="https://arxiv.org/pdf/2611.10457v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Large language model (LLM) agents need to choose actions whose consequences unfold over multiple future steps, yet poor decisions do not reveal whether the model failed to represent those consequences or failed to use them. Mechanistic interpretability has studied internal representations of environment state and plans, but sequential decision making also requires evaluating how candidate actions change future outcomes. Reinforcement learning formalizes this as action value. We study this computation in Qwen2.5-7B-Instruct, Qwen2.5-32B-Instruct, and GPT-OSS-20B across a partially observed Grid environment and WebShop, a simulated web shopping environment. We find that the relative values of candidate actions are linearly decodable from intermediate hidden states, including at states where the policy prefers a worse action. We call this gap between value representation and policy choice value-policy dissociation. To investigate how represented value relates to action selection, we compare direct interventions along the value readout direction with Natural Value Transport (NVT), a transformation learned from hidden state changes that naturally result from differences in action value. While readout-direction interventions have limited and inconsistent effects, NVT more consistently influences action preferences, particularly at later layers. We also test a closed-loop controller that uses the value readout as a sensor and NVT as an actuator, observing improvements in task outcomes. These results suggest that LLM agents can represent useful prospective value without reliably translating it into policy choice.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>被表征但未被使用：LLM智能体中的价值-策略分离</div>
+<div class="mono" style="margin-top:8px">大语言模型（LLM）智能体需要选择其后果会在未来多个步骤中展开的动作，然而糟糕的决策并不能揭示模型究竟是未能表征这些后果，还是未能利用这些后果。机制可解释性已研究了环境状态和计划的内部表征，但序列决策还需要评估候选动作如何改变未来结果。强化学习将此形式化为动作价值。我们在部分可观测的Grid环境和模拟网络购物环境WebShop中，研究了Qwen2.5-7B-Instruct、Qwen2.5-32B-Instruct和GPT-OSS-20B中的这一计算。我们发现，候选动作的相对价值可以从中间隐藏状态中线性解码，包括在策略偏好较差动作的状态下。我们将价值表征与策略选择之间的这一差距称为价值-策略分离。为探究被表征的价值如何与动作选择相关联，我们将沿价值读出方向的直接干预与自然价值传输（NVT）进行比较，后者是一种从由动作价值差异自然导致的隐藏状态变化中学习到的变换。读出方向干预的效果有限且不一致，而NVT更一致地影响动作偏好，尤其是在较后的层中。我们还测试了一个闭环控制器，将价值读出用作传感器、将NVT用作执行器，观察到任务结果的改善。这些结果表明，LLM智能体能够表征有用的前瞻性价值，却无法可靠地将其转化为策略选择。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">This paper asks whether LLM agents fail to represent the future consequences of actions or fail to use those representations when choosing actions, a distinction that poor decisions alone cannot reveal. The authors frame action evaluation as action value and use linear probes on intermediate hidden states of Qwen2.5-7B-Instruct, Qwen2.5-32B-Instruct, and GPT-OSS-20B in a partially observed Grid environment and WebShop, finding that relative values of candidate actions are linearly decodable even at states where the policy prefers a worse action, a gap they term value-policy dissociation. Comparing direct interventions along the value readout direction with Natural Value Transport (NVT), a transformation learned from hidden-state changes associated with action-value differences, they find readout-direction interventions have limited and inconsistent effects while NVT more consistently shifts action preferences, especially at later layers, and a closed-loop controller using the value readout as a sensor and NVT as an actuator improves task outcomes, suggesting agents can represent prospective value without reliably translating it into policy choice.</div>
+<div class="mono" style="margin-top:8px">本文关注大语言模型智能体在多步决策中究竟是未能表征行动的远期后果，还是未能利用已有的表征，而仅凭行为表现无法区分这两种情况。作者在部分可观测的 Grid 环境和模拟购物环境 WebShop 中，考察 Qwen2.5-7B-Instruct、Qwen2.5-32B-Instruct 和 GPT-OSS-20B 的行动价值计算，发现候选行动的相对价值可从中间隐藏状态中线性解码，即使在策略偏好较差行动的状态下也是如此，并将这一价值表征与策略选择之间的差距称为价值—策略分离。作者比较了沿价值读出方向的直接干预与自然价值传输（NVT，一种从行动价值差异自然引起的隐藏状态变化中学习到的变换），发现读出方向干预效果有限且不一致，而 NVT 更能稳定地影响行动偏好，尤其在较深层；同时，以价值读出作为传感器、以 NVT 作为执行器的闭环控制器改善了任务结果。这些结果表明，LLM 智能体能够表征有用的前瞻性价值，却未能可靠地将其转化为策略选择。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Bayesian Low-Rank Posteriors for Scalable Membership Inference</div>
+<div class="meta-line">Authors: Khanh Nguyen, Antonio Emanuele Cinà, Andrey Barsky, Alejandra Reinares, Fabio Roli, Dimosthenis Karatzas</div>
+<div class="meta-line">Venue: NeurIPS 2026</div>
+<div class="meta-line">First: 2026-11-07T04:08:06+00:00 · Latest: 2026-11-07T04:08:06+00:00</div>
+<div class="meta-line">Comments: NeurIPS 2026</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2611.10455v1">Abs</a> · <a href="https://arxiv.org/pdf/2611.10455v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Membership inference attacks (MIAs) aim to determine whether a sample was used during the training of a target model. Strong MIAs rely on reference (or shadow) models to estimate target-conditional score distributions, but training such ensembles is computationally expensive for modern large-scale Vision--Language Models (VLMs). In this work, we propose a scalable alternative that replaces explicit reference-model training with a Bayesian approximation over low-rank adaptation parameters. Specifically, we model uncertainty only within the LoRA subspace and construct a posterior from a single training run, from which we sample a diverse set of \emph{virtual reference models}. We instantiate this approach using Stochastic Weight Averaging Gaussian (SWAG), enabling efficient approximation of target-conditional score distributions at a fraction of the cost of conventional shadow-model ensembles. We evaluate the resulting attack on three downstream-adapted VLMs across two privacy-sensitive visual question answering tasks, namely Document VQA and Medical VQA. To isolate the effect of pretraining knowledge, we additionally introduce a controlled synthetic dataset. Our approach outperforms standard reference-based attacks while requiring only a single reference-model fine-tuning run, making membership inference more practical for large VLMs.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>面向可扩展成员推理的贝叶斯低秩后验</div>
+<div class="mono" style="margin-top:8px">成员推理攻击（MIA）旨在判断某个样本是否在目标模型的训练过程中被使用。强力的 MIA 依赖参考（或影子）模型来估计目标条件得分分布，但为现代大规模视觉-语言模型（VLM）训练此类集成模型的计算成本很高。在本工作中，我们提出一种可扩展的替代方案，用对低秩适应参数的贝叶斯近似来取代显式的参考模型训练。具体而言，我们仅在 LoRA 子空间内建模不确定性，并从单次训练运行中构造后验，从中采样得到一组多样化的\emph{虚拟参考模型}。我们使用随机权重平均高斯（SWAG）实例化该方法，从而以传统影子模型集成成本的一小部分高效近似目标条件得分分布。我们在两个隐私敏感的视觉问答任务（即文档 VQA 和医学 VQA）上，对三个经下游适应的 VLM 评估了所得攻击。为分离预训练知识的影响，我们还额外引入了一个受控合成数据集。我们的方法优于标准的基于参考的攻击，同时仅需一次参考模型微调运行，使成员推理对大型 VLM 更加实用。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Membership inference attacks on large vision-language models typically depend on training ensembles of reference or shadow models to estimate target-conditional score distributions, which is computationally prohibitive at scale. This work proposes replacing explicit reference-model training with a Bayesian approximation confined to the low-rank adaptation (LoRA) subspace, building a posterior from a single training run and sampling virtual reference models from it via Stochastic Weight Averaging Gaussian (SWAG). The attack is evaluated on three downstream-adapted VLMs across Document VQA and Medical VQA, plus a controlled synthetic dataset introduced to isolate the effect of pretraining knowledge, and it outperforms standard reference-based attacks while requiring only one reference-model fine-tuning run.</div>
+<div class="mono" style="margin-top:8px">成员推断攻击通常依赖参考模型或影子模型集成来估计目标条件分数分布，但对大规模视觉语言模型而言，训练此类集成代价过高。本文提出用低秩适配参数上的贝叶斯近似替代显式参考模型训练，仅在LoRA子空间内建模不确定性，并通过随机权重平均高斯（SWAG）从单次训练运行中构造后验，从中采样得到多样化的虚拟参考模型。该方法在三个下游适配的视觉语言模型上、针对文档VQA和医学VQA两项任务进行评估，并额外引入一个受控合成数据集以分离预训练知识的影响；结果显示该方法优于标准基于参考模型的攻击，且仅需一次参考模型微调运行。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">A Communication-Theoretic Framework for LLM Agents: Cost-Aware Adaptive Reliability</div>
+<div class="meta-line">Authors: Hamed Omidvar, Vahideh Akhlaghi</div>
+<div class="meta-line">Venue: NeurIPS 2026</div>
+<div class="meta-line">First: 2026-05-09T19:14:33+00:00 · Latest: 2026-11-07T03:48:34+00:00</div>
+<div class="meta-line">Comments: Accepted at NeurIPS 2026 (camera-ready version). 76 pages, 39 figures, 23 tables</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2605.09121v2">Abs</a> · <a href="https://arxiv.org/pdf/2605.09121v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Agents built on large language models (LLMs) rely on reliability techniques such as retry, majority voting, and self-consistency developed in parallel rather than within a common analytical framework. We observe that an LLM sampled at temperature $T$ is a discrete stochastic channel $p(y \mid x)$ in the sense of Shannon&#x27;s coding theory, and use this identity as the entry point for such a framework. Each of these techniques is a special case of one of six classical reliability operators: diversity combining, hybrid retransmission, iterative generator-critic decoding, rateless sampling, structured redundant verification, and difficulty-adaptive routing. Within the framework we give two closed-form results, a noise-variance threshold above which uniform averaging beats quality-weighted averaging and a contractivity criterion for generator-critic refinement, and turn each into a design rule checkable before committing compute. We further introduce a cost-aware semantic-nearest-neighbor router whose single Lagrangian knob traverses the quality-cost frontier without retraining. Across six local and cloud channel configurations, no fixed model-technique-budget choice dominates. On a 300-item hard split of MMLU, GSM8K, and HumanEval, the router occupies the empirical Pareto frontier: at matched quality its normalized cost is $\approx$56% lower than the best fixed technique, and at matched cost it improves quality by $\approx$7% (26% over single-shot decoding). Judge-free grading of 6,900 outputs confirms that the judge tracks correctness at the item level and that the router&#x27;s advantage over a fixed policy persists at most cost settings; with internal reasoning enabled, the gain of external refinement shrinks but remains significant for our incremental-redundancy operator. These results argue for consolidating reliability techniques into a single tunable layer informed by channel coding.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>面向LLM智能体的通信理论框架：成本感知的自适应可靠性</div>
+<div class="mono" style="margin-top:8px">基于大语言模型（LLM）构建的智能体依赖重试、多数投票和自一致性等可靠性技术，但这些技术是各自独立发展的，而非处于一个共同的分析框架之内。我们观察到，在温度$T$下采样的LLM是香农编码理论意义上的离散随机信道$p(y \mid x)$，并将这一等同关系作为构建此类框架的切入点。上述每种技术都是六种经典可靠性算子之一的特例：分集合并、混合重传、迭代生成器-评论器解码、无速率采样、结构化冗余验证以及难度自适应路由。在该框架内，我们给出两个闭式结果：一个是噪声方差阈值，超过该阈值时均匀平均优于质量加权平均；另一个是生成器-评论器精化的收缩性判据，并将二者分别转化为可在投入算力之前检查的设计规则。我们进一步引入一种成本感知的语义最近邻路由器，其单一拉格朗日旋钮无需重新训练即可遍历质量-成本前沿。在六种本地和云端信道配置下，没有任何固定的模型-技术-预算选择占优。在MMLU、GSM8K和HumanEval的300项困难划分上，该路由器占据经验帕累托前沿：在质量匹配时，其归一化成本比最佳固定技术低约56%；在成本匹配时，其质量提升约7%（相较单次解码提升26%）。对6,900个输出的无评判器评分证实，评判器在项目级别上跟踪正确性，且路由器相对于固定策略的优势在大多数成本设置下持续存在；在启用内部推理时，外部精化的增益缩小，但对我们的增量冗余算子而言仍然显著。这些结果支持将可靠性技术整合为一个受信道编码启发的单一可调层。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">DiSARM: Diverse and Surprising Association Rule Mining with Large Language Models</div>
+<div class="meta-line">Authors: Lijia Liu, Hisashi Kashima</div>
+<div class="meta-line">First: 2026-11-07T03:46:48+00:00 · Latest: 2026-11-07T03:46:48+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2611.10445v1">Abs</a> · <a href="https://arxiv.org/pdf/2611.10445v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Exploratory Data Analysis (EDA) aims to discover informative patterns in large datasets. For transactional data, Association Rule Mining (ARM) is an established approach that facilitates EDA by efficiently generating candidate patterns. Beyond efficient mining, identifying informative rules has also been extensively studied through both objective and subjective interestingness measures. Recent advances in Large Language Models (LLMs) offer new opportunities for assessing subjective interestingness using world knowledge. Nevertheless, relying solely on LLMs raises concerns about scalability and statistical reliability. Building on prior ARM research, we propose a hybrid framework, DiSARM, that leverages the world knowledge of LLMs to assess the subjective interestingness of rules, while maintaining statistical reliability and promoting diversity among the selected rules. Across three transactional datasets, experiments demonstrate that DiSARM effectively combines statistical reliability with surprise and diversity, offering a promising approach to ADE from transactional data.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>DiSARM：基于大语言模型的多样且令人惊讶的关联规则挖掘</div>
+<div class="mono" style="margin-top:8px">探索性数据分析（EDA）旨在从大型数据集中发现有信息量的模式。对于事务型数据，关联规则挖掘（ARM）是一种成熟的方法，通过高效生成候选模式来促进EDA。除高效挖掘外，识别有信息量的规则也已通过客观和主观兴趣度度量得到广泛研究。大语言模型（LLM）的最新进展为利用世界知识评估主观兴趣度提供了新机遇。然而，仅依赖LLM会引发对可扩展性和统计可靠性的担忧。基于先前的ARM研究，我们提出了一种混合框架DiSARM，利用LLM的世界知识评估规则的主观兴趣度，同时保持统计可靠性并促进所选规则之间的多样性。在三个事务型数据集上的实验表明，DiSARM有效地将统计可靠性与惊喜性和多样性相结合，为从事务型数据进行ADE提供了一种有前景的方法。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Association rule mining supports exploratory data analysis of transactional data, but identifying subjectively interesting rules remains challenging, and relying solely on large language models for this assessment raises scalability and statistical reliability concerns. The authors propose DiSARM, a hybrid framework that uses LLM world knowledge to judge the subjective interestingness of rules while preserving statistical reliability and promoting diversity among selected rules. Experiments on three transactional datasets show that DiSARM effectively combines statistical reliability with surprise and diversity, indicating a promising approach to exploratory analysis of transactional data.</div>
+<div class="mono" style="margin-top:8px">关联规则挖掘可用于事务型数据的探索性数据分析，现有研究已从客观和主观有趣性度量两方面进行了广泛探讨，而近期大语言模型为利用世界知识评估主观有趣性提供了新机会，但仅依赖大语言模型会带来可扩展性和统计可靠性方面的问题。作者提出 DiSARM 这一混合框架，利用大语言模型的世界知识评估规则的主观有趣性，同时保持统计可靠性并促进所选规则的多样性。在三个事务型数据集上的实验表明，DiSARM 有效结合了统计可靠性与意外性和多样性，为事务型数据的探索性分析提供了一种有前景的方法。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">MARR: Module-Adaptive Residual Reconstruction for Low-Bit Post-Training Quantization</div>
+<div class="meta-line">Authors: Le Su, Xing Luo, Zhi Jin</div>
+<div class="meta-line">First: 2026-05-18T07:51:49+00:00 · Latest: 2026-11-07T03:41:53+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2605.17997v2">Abs</a> · <a href="https://arxiv.org/pdf/2605.17997v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Recently, residual reconstruction-based model quantization methods have achieved promising performance in low-bit Post-Training Quantization (PTQ) by introducing cross-module residuals to reduce error accumulated from previous modules. However, these residuals may also introduce additional bias arising from the Hessian-Approximation (HA) assumption, resulting their two-sided effect and potentially leading to suboptimal quantization performance. Therefore, in this work, we propose a residual regulation strategy to mitigate the HA bias associated with residual strength, while preserving accumulated-error correction. Furthermore, we observe that this two-sided effect is module-dependent, we futher propose a Module-Adaptive Residual Reconstruction (MARR), which assigns a module-specific scaling coefficient to adaptively balance accumulated-error correction and residual-related HA bias for each module. To avoid exhaustive per-module coefficient search and obtain a stable coefficient estimate, we design an Proportional-Integral-Derivative (PID)-based update strategy that employs reconstruction error as feedback to progressively refine this coefficient. Experiments on several typical Large Language Models (LLMs) and Vision Transformers (ViTs) demonstrate the effectiveness of MARR under low-bit quantization ($\leq$4-bit), achieving up to 20.2\% perplexity reduction on LLMs and up to 4.6\% accuracy gains on ViTs over the residual reconstruction baselines. Code will be made publicly available upon acceptance.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>MARR：面向低比特训练后量化的模块自适应残差重建</div>
+<div class="mono" style="margin-top:8px">近年来，基于残差重建的模型量化方法通过引入跨模块残差来减少前序模块累积的误差，在低比特训练后量化（PTQ）中取得了良好性能。然而，这些残差也可能引入由Hessian近似（HA）假设产生的额外偏差，从而形成双边效应，并可能导致次优的量化性能。因此，在本工作中，我们提出一种残差调节策略，以缓解与残差强度相关的HA偏差，同时保留累积误差校正。此外，我们观察到这种双边效应具有模块依赖性，因此进一步提出模块自适应残差重建（MARR），为每个模块分配模块特定的缩放系数，以自适应地平衡累积误差校正与残差相关的HA偏差。为避免逐模块穷举搜索系数并获得稳定的系数估计，我们设计了一种基于比例-积分-微分（PID）的更新策略，以重建误差作为反馈逐步细化该系数。在多个典型大语言模型（LLM）和视觉Transformer（ViT）上的实验表明，MARR在低比特量化（≤4比特）下有效，相较于残差重建基线，在LLM上困惑度最多降低20.2%，在ViT上准确率最多提升4.6%。代码将在论文录用后公开。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Residual reconstruction-based post-training quantization reduces accumulated error by introducing cross-module residuals, but these residuals also carry bias from the Hessian-Approximation assumption, creating a two-sided effect that can degrade quantization. The authors propose a residual regulation strategy to mitigate this bias while preserving error correction, and, observing that the effect is module-dependent, introduce Module-Adaptive Residual Reconstruction (MARR), which assigns a module-specific scaling coefficient and refines it with a PID-based update using reconstruction error as feedback, avoiding exhaustive per-module search. Experiments on several LLMs and Vision Transformers show that MARR improves low-bit (4-bit or less) quantization over residual reconstruction baselines, with up to 20.2% perplexity reduction on LLMs and up to 4.6% accuracy gains on ViTs.</div>
+<div class="mono" style="margin-top:8px">基于残差重建的训练后量化通过引入跨模块残差来减少前序模块累积的误差，在低比特场景下表现良好，但这些残差也会带来由Hessian近似假设引起的额外偏差，形成双向效应，可能导致量化性能次优。为此，作者提出残差调节策略以在保留累积误差校正的同时缓解与残差强度相关的Hessian近似偏差；并观察到该双向效应具有模块依赖性，进一步提出模块自适应残差重建（MARR），为每个模块分配特定的缩放系数以自适应平衡误差校正与残差相关偏差，同时设计基于比例-积分-微分（PID）的更新策略，以重建误差为反馈逐步修正系数，避免逐模块穷举搜索并获得稳定估计。在多个典型大语言模型和视觉Transformer上的实验表明，MARR在低比特（不超过4比特）量化下优于残差重建基线，在LLM上困惑度最多降低20.2%，在ViT上准确率最多提升4.6%。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Test-time scaling of diffusions with flow maps</div>
+<div class="meta-line">Authors: Amirmojtaba Sabour, Michael S. Albergo, Carles Domingo-Enrich, Nicholas M. Boffi, Sanja Fidler, Karsten Kreis, Eric Vanden-Eijnden</div>
+<div class="meta-line">First: 2025-11-27T18:44:12+00:00 · Latest: 2026-11-07T03:33:58+00:00</div>
+<div class="meta-line">Comments: Project page: https://flow-map-trajectory-tilting.github.io/</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2511.22688v2">Abs</a> · <a href="https://arxiv.org/pdf/2511.22688v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a> · <a href="https://flow-map-trajectory-tilting.github.io/">Project1</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">A common recipe to improve diffusion models at test-time so that samples score highly against a user-specified reward is to introduce the gradient of the reward into the dynamics of the diffusion itself. This procedure is often ill posed, as user-specified rewards are usually only well defined on the data distribution at the end of generation. While common workarounds to this problem are to use a denoiser to estimate what a sample would have been at the end of generation, we propose a simple solution to this problem by working directly with a flow map. By exploiting a relationship between the flow map and velocity field governing the instantaneous transport, we construct an algorithm, Flow Map Trajectory Tilting (FMTT), which provably performs better ascent on the reward than standard test-time methods involving the gradient of the reward. The approach can be used to either perform exact sampling via importance weighting or principled search that identifies local maximizers of the reward-tilted distribution. We demonstrate the efficacy of our approach against other look-ahead techniques, and show how the flow map enables engagement with complicated reward functions that make possible new forms of image editing, e.g. by interfacing with vision language models.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>扩散模型流映射的测试时扩展</div>
+<div class="mono" style="margin-top:8px">在测试时改进扩散模型以使样本在用户指定奖励上获得高分的常见做法，是将奖励的梯度引入扩散本身的动力学中。这一过程通常是不适定的，因为用户指定的奖励通常只在生成结束时的数据分布上有良好定义。针对该问题的常见变通方法是使用去噪器来估计生成结束时样本本应是什么样，而我们提出一个简单方案：直接使用流映射。通过利用流映射与支配瞬时传输的速度场之间的关系，我们构建了流映射轨迹倾斜（Flow Map Trajectory Tilting, FMTT）算法，可证明其在奖励上升方面优于涉及奖励梯度的标准测试时方法。该方法既可用于通过重要性加权进行精确采样，也可用于有原则的搜索以识别奖励倾斜分布的局部极大值。我们展示了该方法相对于其他前瞻技术的有效性，并说明流映射如何支持与复杂奖励函数的交互，从而实现新形式的图像编辑，例如与视觉语言模型对接。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Test-time reward optimization for diffusion models typically injects the reward gradient into the diffusion dynamics, but this is ill posed because user-specified rewards are only well defined on the data distribution at the end of generation. The authors instead work directly with a flow map, exploiting the relationship between the flow map and the velocity field governing instantaneous transport to construct Flow Map Trajectory Tilting (FMTT), which provably performs better reward ascent than standard test-time gradient-based methods. The approach supports either exact sampling via importance weighting or principled search for local maximizers of the reward-tilted distribution, and experiments against other look-ahead techniques show its efficacy, including enabling complicated reward functions that support new forms of image editing such as interfacing with vision language models.</div>
+<div class="mono" style="margin-top:8px">该论文针对扩散模型测试时奖励引导的病态性问题展开研究：用户指定的奖励通常只在生成末端的数据分布上有良好定义，因此将奖励梯度直接引入扩散动力学的常见做法并不稳健。作者提出流映射轨迹倾斜（FMTT）方法，直接基于流映射，并利用流映射与支配瞬时传输的速度场之间的关系构建算法，可证明其在奖励上升方面优于标准的测试时奖励梯度方法。FMTT既可通过重要性加权实现精确采样，也可进行有原则的搜索以找到奖励倾斜分布的局部极大值。实验表明该方法优于其他前瞻类技术，并显示流映射能够处理复杂奖励函数，从而实现与视觉语言模型交互等新的图像编辑形式。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Symbolic Temporal Supervision of LLM Agents Using Contracts</div>
+<div class="meta-line">Authors: Yifeng Xiao, Johnna Liu, Pierluigi Nuzzo</div>
+<div class="meta-line">First: 2026-09-16T05:05:35+00:00 · Latest: 2026-11-07T03:29:00+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2609.18128v2">Abs</a> · <a href="https://arxiv.org/pdf/2609.18128v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Large language model (LLM) agents augmented by tools can automate complex, multi-step tasks, such as web navigation, code generation, and workflow orchestration, by acting on external systems through tool calls. However, hallucinations, distributional instability, and adversarial manipulations in LLMs, and the irreversible consequences of certain tool calls can lead to harmful outcomes. These risks call for safeguards that can check requirements across a trajectory, both before actions execute and when recorded behavior is evaluated. We present ContrAgent, a contract-based framework for symbolic temporal supervision of LLM agents. ContrAgent captures an agent&#x27;s behavior as a sequence of tool calls and formalizes it as a trace over a fixed set of checkable predicates. It then specifies required behaviors using assume-guarantee contracts in linear temporal logic over finite traces (LTL$_f$). Each contract is compiled to a deterministic finite automaton (DFA) that serves two roles: gating agent actions online and evaluating recorded traces offline. A contract library, acting as a reusable knowledge base, is maintained independently of the agent&#x27;s model and can be applied across different agents within the same task domain. We show the effectiveness of our approach on four benchmarks spanning both roles, where ContrAgent is competitive with LLM-judge, classifier, and guardrail baselines while producing deterministic, reproducible verdicts and, in the online mode, orders of magnitude lower per-call latency.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>使用合约对LLM智能体进行符号时序监督</div>
+<div class="mono" style="margin-top:8px">由工具增强的大语言模型（LLM）智能体可以通过工具调用作用于外部系统，从而自动化复杂的多步骤任务，例如网页导航、代码生成和工作流编排。然而，LLM中的幻觉、分布不稳定性和对抗性操纵，以及某些工具调用的不可逆后果，可能导致有害结果。这些风险要求具备能够在整条轨迹上检查需求的安全保障措施，既在动作执行之前，也在评估已记录行为之时。我们提出ContrAgent，一个基于合约的框架，用于对LLM智能体进行符号时序监督。ContrAgent将智能体的行为捕获为工具调用序列，并将其形式化为固定可检查谓词集合上的迹。随后，它使用有限迹上的线性时序逻辑（LTL$_f$）中的假设-保证合约来指定所需行为。每个合约被编译为确定性有限自动机（DFA），该自动机承担两种角色：在线门控智能体动作，以及离线评估已记录的迹。合约库作为可复用的知识库，独立于智能体的模型进行维护，并可应用于同一任务领域内的不同智能体。我们在涵盖这两种角色的四个基准上展示了方法的有效性，其中ContrAgent与LLM评判器、分类器和护栏基线相比具有竞争力，同时产生确定性、可复现的判定，并且在线模式下每次调用的延迟低数个数量级。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">The paper addresses the risks that tool-augmented LLM agents pose, including hallucinations, distributional instability, adversarial manipulation, and the irreversible consequences of some tool calls, which together motivate safeguards that can check requirements across an entire trajectory both before actions execute and when recorded behavior is evaluated. The authors present ContrAgent, a contract-based framework that represents agent behavior as a sequence of tool calls formalized as a trace over a fixed set of checkable predicates, specifies required behavior with assume-guarantee contracts in linear temporal logic over finite traces, and compiles each contract to a deterministic finite automaton used both to gate actions online and to evaluate recorded traces offline, with a reusable contract library maintained independently of the agent&#x27;s model. Across four benchmarks covering both roles, ContrAgent is competitive with LLM-judge, classifier, and guardrail baselines while producing deterministic, reproducible verdicts and, in online mode, per-call latency that is orders of magnitude lower.</div>
+<div class="mono" style="margin-top:8px">该论文针对工具增强型大语言模型智能体因幻觉、分布不稳定、对抗性操纵以及某些工具调用的不可逆后果而产生有害结果的风险，提出需要在动作执行前和记录行为评估时对整条轨迹上的需求进行检查。作者提出 ContrAgent，一个基于契约的符号时序监督框架：它将智能体行为表示为工具调用序列，并在固定可检查谓词上形式化为迹，用有限迹线性时序逻辑中的假设-保证契约规定所需行为，再将每个契约编译为确定性有限自动机，既用于在线门控智能体动作，也用于离线评估记录的迹，同时维护一个独立于智能体模型、可复用的契约库。在覆盖这两种角色的四个基准上，ContrAgent 与 LLM 评判器、分类器和护栏基线相比具有竞争力，同时产生确定性、可复现的判定，且在线模式下每次调用延迟低数个数量级。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Do Semantic Distance Tests Actually Predict Creativity in LLMs? Evidence for Jagged Creativity</div>
+<div class="meta-line">Authors: Samuel Schapiro, Alexi Gladstone, Jonah Black, Heng Ji</div>
+<div class="meta-line">Venue: NeurIPS 2026</div>
+<div class="meta-line">First: 2026-05-13T12:46:05+00:00 · Latest: 2026-11-07T03:28:42+00:00</div>
+<div class="meta-line">Comments: Accepted at 40th Annual Conference on Neural Information Processing Systems (NeurIPS 2026)</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2605.13450v2">Abs</a> · <a href="https://arxiv.org/pdf/2605.13450v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Measuring the creativity of large language models (LLMs) is essential for designing methods that can improve creativity and for enhancing our scientific understanding of this ability. To accomplish this, it has become common in recent years to administer semantic distance tests of human creativity to LLMs. Although these tests provide a convenient and fully automated way to score aspects of &quot;creativity,&quot; their validity as measures of machine creativity has not been established. To address this problem, we conduct the first large-scale, systematic study assessing the effectiveness of semantic distance tests for predicting the creative achievement of LLMs across four target constructs: (a) creative writing, (b) output diversity on open-ended prompts, (c) combinatorial creativity, and (d) scientific ideation. We score each test on two criteria (validity and specificity), and derive a theoretical limit for the maximum attainable specificity and validity a test can achieve. We find that: (1) No test is a significant predictor of output diversity, suggesting that point creativity, the ability to produce a single response connecting semantically distant concepts, and distributional creativity, the ability to produce distinct responses across repeated samples, may dissociate in current LLMs--a pattern we call jagged creativity. (2) The Remote Associates Test is effectively a proxy for general capabilities rather than a specific predictor of creativity in LLMs. (3) Lastly, the Divergent Association Task is the best predictor of creative writing, but no single test predicts all constructs well. In summary, our results prescribe caution when applying psychometric tests and tasks of creativity validated among human populations to LLMs.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>语义距离测试真的能预测大语言模型的创造力吗？锯齿状创造力的证据</div>
+<div class="mono" style="margin-top:8px">测量大语言模型（LLM）的创造力对于设计能够提升创造力的方法以及增进我们对这一能力的科学理解至关重要。为此，近年来将人类创造力的语义距离测试施测于LLM已成为常见做法。尽管这些测试提供了一种便捷且完全自动化的方式来对&quot;创造力&quot;的各个方面进行评分，但其作为机器创造力测量工具的有效性尚未得到确立。为解决这一问题，我们开展了首个大规模、系统性的研究，评估语义距离测试在预测LLM创造性成就方面的有效性，涵盖四个目标构念：(a) 创造性写作，(b) 开放式提示下的输出多样性，(c) 组合创造力，以及 (d) 科学构想。我们依据两项标准（有效性和特异性）对每个测试进行评分，并推导出测试可达到的最大特异性和有效性的理论极限。我们发现：(1) 没有任何测试是输出多样性的显著预测因子，这表明点创造力（产生连接语义上相距较远概念的单一响应的能力）与分布创造力（在重复采样中产生不同响应的能力）在当前LLM中可能发生分离——我们将这一模式称为锯齿状创造力。(2) 远程联想测试实际上是通用能力的代理指标，而非LLM创造力的特异性预测因子。(3) 最后，发散联想任务是创造性写作的最佳预测因子，但没有单一测试能很好地预测所有构念。总之，我们的结果表明，在将已在人类群体中验证的心理测量测试和创造力任务应用于LLM时应保持谨慎。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">This paper questions whether semantic distance tests, widely used as convenient automated measures of LLM creativity, actually predict creative achievement, and reports the first large-scale systematic evaluation of their validity and specificity across four constructs: creative writing, output diversity on open-ended prompts, combinatorial creativity, and scientific ideation. The authors score each test on validity and specificity, derive a theoretical upper bound on attainable specificity and validity, and compare test performance against these targets. They find that no test significantly predicts output diversity, suggesting that point creativity (producing a single response linking distant concepts) and distributional creativity (producing distinct responses across samples) may dissociate in current LLMs, a pattern termed jagged creativity; that the Remote Associates Test functions largely as a proxy for general capability rather than a specific creativity predictor; and that the Divergent Association Task best predicts creative writing, though no single test predicts all constructs well, indicating caution is needed when applying human-validated psychometric creativity tests to LLMs.</div>
+<div class="mono" style="margin-top:8px">本文质疑语义距离测试这一便捷且自动化的类人创造力测量工具能否真正预测大语言模型的创造性表现，并首次大规模系统地评估了此类测试在四个目标构念上的有效性：创造性写作、开放式提示下的输出多样性、组合创造力以及科学构想。研究对每项测试从效度和特异性两个标准打分，并推导出测试可达到的特异性与效度的理论上限。结果显示：没有任何测试能显著预测输出多样性，说明当前大语言模型中“点创造力”（生成连接语义远距概念的单一回答）与“分布创造力”（在重复采样中生成彼此不同的回答）可能相互分离，作者称之为“锯齿状创造力”；远程联想测验实质上更像通用能力的代理指标，而非创造力的特异性预测器；发散联想任务是创造性写作的最佳预测指标，但没有单一测试能同时很好地预测所有构念。作者据此建议，在将经人类群体验证的心理测量创造力测试应用于大语言模型时应保持谨慎。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">CRePE: Curved Ray Expectation Positional Encoding for Unified-Camera-Controlled Video Generation</div>
+<div class="meta-line">Authors: Seonghyun Jin, Youngmin Kim, Sunwoo Park, Jong Chul Ye</div>
+<div class="meta-line">Venue: NeurIPS 2026</div>
+<div class="meta-line">First: 2026-05-13T03:18:26+00:00 · Latest: 2026-11-07T03:06:34+00:00</div>
+<div class="meta-line">Comments: Accepted to NeurIPS 2026. An earlier version was presented at the ECCV 2026 Workshop on 3D in the Era of World Models (3DWM). 22 pages, including appendix. Project page: https://crepe-neurips2026.github.io/</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2605.12938v3">Abs</a> · <a href="https://arxiv.org/pdf/2605.12938v3">PDF</a> · <a href="https://github.com/jinotter3/CRePE">Code1</a> · <a href="https://huggingface.co/huggingface">Code2</a> · <a href="https://huggingface.co/docs/hub/spaces">Code3</a> · <a href="https://crepe-neurips2026.github.io/">Project1</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Camera-conditioned video generation requires positional encoding that remains reliable under changes in camera motion, lens configuration, and scene structure. However, existing attention-level camera encodings either provide ray-only camera signals or rely on pinhole camera geometry, limiting their applicability to general camera control under the Unified Camera Model, including wide-angle and fisheye lenses. To address this limitation, we propose Curved Ray Expectation Positional Encoding (CRePE). CRePE represents each image token as a depth-aware positional distribution along its source ray, providing a Unified Camera Model-compatible positional encoding that naturally captures the curved-ray geometry of wide-angle and fisheye cameras. CRePE is implemented through a Geometric Attention Adapter added to frozen video DiTs, injecting token-wise scene-distance information into selected attention layers and stabilizing it with pseudo supervision from a monocular geometry foundation model. This design leads to more stable camera control with competitive video quality in camera-conditioned video generation under the Unified Camera Model, and the resulting model transfers zero-shot to real fisheye and diverse pinhole videos. Controlled positional-encoding ablations show improvements over a RayRoPE-style endpoint approximation, demonstrating the effectiveness of curved-ray-aware positional encoding, particularly for non-pinhole cameras. Furthermore, by extending the same positional-encoding pathway to external geometry control through Radial MixForcing, CRePE supports external radial-map control for scene-geometry-conditioned generation and source-video motion transfer beyond camera control. Project page: https://crepe-neurips2026.github.io/; code: https://github.com/jinotter3/CRePE.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>CRePE：用于统一相机控制视频生成的曲线射线期望位置编码</div>
+<div class="mono" style="margin-top:8px">相机条件视频生成需要一种在相机运动、镜头配置和场景结构变化下仍保持可靠的位置编码。然而，现有的注意力级相机编码要么仅提供射线相机信号，要么依赖针孔相机几何，限制了其在统一相机模型下（包括广角和鱼眼镜头）通用相机控制的适用性。为解决这一局限，我们提出曲线射线期望位置编码（CRePE）。CRePE将每个图像token表示为其源射线上深度感知的位置分布，提供了一种兼容统一相机模型的位置编码，能够自然捕捉广角和鱼眼相机的曲线射线几何。CRePE通过添加到冻结视频DiT上的几何注意力适配器实现，将逐token的场景距离信息注入选定的注意力层，并利用单目几何基础模型的伪监督进行稳定。该设计在统一相机模型下的相机条件视频生成中实现了更稳定的相机控制，并具有有竞争力的视频质量，所得模型可零样本迁移到真实鱼眼和多样针孔视频。受控位置编码消融实验显示其优于RayRoPE风格的端点近似，证明了曲线射线感知位置编码的有效性，尤其是对非针孔相机。此外，通过将相同的位置编码路径扩展到通过Radial MixForcing进行外部几何控制，CRePE支持外部径向图控制，用于场景几何条件生成以及超越相机控制的源视频运动迁移。项目页面：https://crepe-neurips2026.github.io/；代码：https://github.com/jinotter3/CRePE。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Camera-conditioned video generation needs positional encodings that stay reliable across camera motion, lens configuration, and scene structure, but existing attention-level camera encodings either supply ray-only signals or assume pinhole geometry, which limits general camera control under the Unified Camera Model including wide-angle and fisheye lenses. The authors propose Curved Ray Expectation Positional Encoding (CRePE), which represents each image token as a depth-aware positional distribution along its source ray, yielding a Unified Camera Model-compatible encoding that captures curved-ray geometry, and they implement it via a Geometric Attention Adapter added to frozen video DiTs that injects token-wise scene-distance information into selected attention layers, stabilized by pseudo supervision from a monocular geometry foundation model. The resulting model achieves more stable camera control with competitive video quality and transfers zero-shot to real fisheye and diverse pinhole videos; controlled positional-encoding ablations show gains over a RayRoPE-style endpoint approximation, especially for non-pinhole cameras, and extending the same pathway through Radial MixForcing enables external radial-map control for scene-geometry-conditioned generation and source-video motion transfer beyond camera control.</div>
+<div class="mono" style="margin-top:8px">相机条件视频生成需要在外参运动、镜头配置和场景结构变化下仍可靠的位置编码，但现有注意力层面的相机编码要么只提供射线信号，要么依赖针孔相机几何，限制了其在统一相机模型（含广角与鱼眼镜头）下的一般相机控制能力。作者提出曲射线期望位置编码（CRePE），将每个图像 token 表示为其源射线上深度感知的位置分布，从而给出兼容统一相机模型、能自然刻画广角与鱼眼相机曲射线几何的位置编码，并通过在冻结视频 DiT 上添加几何注意力适配器实现，将逐 token 的场景距离信息注入选定注意力层，并利用单目几何基础模型的伪监督进行稳定。所得模型在统一相机模型下的相机条件视频生成中实现更稳定的相机控制并保持有竞争力的视频质量，可零样本迁移到真实鱼眼及多种针孔视频；受控位置编码消融显示其优于 RayRoPE 式端点近似，尤其在非针孔相机上；通过 Radial MixForcing 扩展同一位置编码通路，还可支持外部径向图控制以实现场景几何条件生成与源视频运动迁移。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Stabilizing Policy Optimization via Logits Convexity</div>
+<div class="meta-line">Authors: Hongzhan Chen, Tao Yang, Yuhua Zhu, Shiping Gao, Xiaojun Quan, Ting Yao</div>
+<div class="meta-line">Venue: NeurIPS 2026</div>
+<div class="meta-line">First: 2026-03-01T07:40:12+00:00 · Latest: 2026-11-07T02:57:56+00:00</div>
+<div class="meta-line">Comments: Accepted to NeurIPS 2026</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2603.00963v3">Abs</a> · <a href="https://arxiv.org/pdf/2603.00963v3">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">While reinforcement learning (RL) has been central to the recent success of large language models (LLMs), RL optimization is notoriously unstable, especially when compared to supervised fine-tuning (SFT). In this work, we investigate the stability gap between SFT and RL from a gradient-based perspective, and show that the convexity of the SFT loss with respect to model logits plays a key role in enabling stable training. Our theoretical analysis demonstrates that this property induces favorable gradient directionality during optimization. In contrast, Proximal Policy Optimization (PPO), a widely adopted policy gradient algorithm utilizing a clipped surrogate objective, lacks this stabilizing property. Motivated by this observation, we propose Logits Convex Optimization (LCO), a simple yet effective policy optimization framework that aligns the learned policy with an optimal target derived from the original RL objective, thereby emulating the stabilizing effects of logits-level convexity. Extensive experiments across multiple model families show that our LCO framework consistently improves training stability and outperforms conventional RL methods on a broad range of benchmarks.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>通过Logits凸性稳定策略优化</div>
+<div class="mono" style="margin-top:8px">尽管强化学习（RL）在近期大语言模型（LLM）的成功中发挥了核心作用，但RL优化以不稳定著称，尤其是与监督微调（SFT）相比。在本工作中，我们从基于梯度的视角研究了SFT与RL之间的稳定性差距，并表明SFT损失相对于模型logits的凸性在实现稳定训练方面起着关键作用。我们的理论分析表明，这一性质在优化过程中诱导了有利的梯度方向性。相比之下，近端策略优化（PPO）——一种采用裁剪代理目标的广泛使用的策略梯度算法——缺乏这种稳定性质。受此观察启发，我们提出了Logits凸优化（LCO），一个简单而有效的策略优化框架，它将学习到的策略与从原始RL目标推导出的最优目标对齐，从而模拟logits级凸性的稳定效果。在多个模型系列上的大量实验表明，我们的LCO框架持续提升训练稳定性，并在广泛的基准上优于传统RL方法。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">This work investigates why reinforcement learning optimization for large language models is markedly less stable than supervised fine-tuning, approaching the gap from a gradient-based perspective and showing that the convexity of the SFT loss with respect to model logits yields favorable gradient directionality that underpins stable training, whereas PPO&#x27;s clipped surrogate objective lacks this property. Motivated by this analysis, the authors propose Logits Convex Optimization (LCO), a policy optimization framework that aligns the learned policy with an optimal target derived from the original RL objective, thereby emulating the stabilizing effects of logits-level convexity. Extensive experiments across multiple model families show that LCO consistently improves training stability and outperforms conventional RL methods on a broad range of benchmarks.</div>
+<div class="mono" style="margin-top:8px">本文从梯度角度研究了监督微调与强化学习之间的稳定性差距，指出SFT损失相对于模型logits的凸性是实现稳定训练的关键，该性质能在优化过程中产生有利的梯度方向，而采用裁剪代理目标的PPO缺乏这一稳定性质。基于此观察，作者提出Logits Convex Optimization（LCO）框架，通过使学习到的策略对齐由原始RL目标导出的最优目标，来模拟logits层面凸性带来的稳定效果。在多个模型系列上的大量实验表明，LCO能够持续提升训练稳定性，并在广泛基准上优于传统强化学习方法。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Mental Imagery That Matters: Curing Latent Collapse in Multimodal Reasoning</div>
+<div class="meta-line">Authors: Mi Luo, Rohan Dugad, Zihui Xue, Alex Dimakis, Kristen Grauman</div>
+<div class="meta-line">Venue: NeurIPS 2026</div>
+<div class="meta-line">First: 2026-11-07T02:56:51+00:00 · Latest: 2026-11-07T02:56:51+00:00</div>
+<div class="meta-line">Comments: Accepted by NeurIPS 2026, Project page: https://vision.cs.utexas.edu/projects/AnchorSim/</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2611.10423v1">Abs</a> · <a href="https://arxiv.org/pdf/2611.10423v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a> · <a href="https://vision.cs.utexas.edu/projects/AnchorSim/">Project1</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Mental simulation, the ability to reason by constructing and updating internal visual states, is central to flexible human cognition, but remains elusive in current multimodal large language models. Latent multimodal reasoning offers a promising route toward this capability by interleaving text with continuous visual latent blocks, allowing models to maintain internal visual workspaces without decoding them into pixels. In this paper, we ask whether these latent visual states actually matter. Through a direct perturbation analysis across representative latent-reasoning MLLMs, we find that they often do not: dropping, replacing, or shuffling generated visual latents has only minor effects on the model&#x27;s own final-answer probability, while equivalent perturbations to the linguistic reasoning trace are substantially more damaging. We call this failure mode Mental Simulation Collapse (MSC): the model appears to perform interleaved visual reasoning, but routes most answer-relevant computation through text. We further diagnose that MSC follows naturally from existing training objectives: visual alignment can make generated latents resemble helper-image embeddings, but it does not require the decoder to rely on them; subsequent text-only supervision further leaves the semantic role of the latent pathway unidentifiable. To address this, we introduce AnchorSim (Anchored Mental Simulation), a contrastive distillation framework that trains models to make their generated visual latents consequential. Across multiple visual reasoning benchmarks, AnchorSim improves performance, while diagnostic re-evaluation shows that visual perturbations now meaningfully affect predictions. Our results expose a fundamental failure mode of latent multimodal reasoning and demonstrate that mental simulation must be anchored to model behavior in order to matter.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>重要的心理意象：治愈多模态推理中的潜在坍缩</div>
+<div class="mono" style="margin-top:8px">心理模拟，即通过构建和更新内部视觉状态进行推理的能力，是灵活人类认知的核心，但在当前的多模态大语言模型中仍难以实现。潜在多模态推理通过将文本与连续视觉潜在块交错，使模型无需解码为像素即可维持内部视觉工作空间，为这一能力提供了有前景的路径。本文探究这些潜在视觉状态是否真正起作用。通过对代表性潜在推理多模态大语言模型进行直接扰动分析，我们发现它们往往并不起作用：丢弃、替换或打乱生成的视觉潜在表示，对模型自身最终答案概率仅有微小影响，而对语言推理轨迹的等效扰动则损害显著更大。我们将这一失效模式称为心理模拟坍缩（MSC）：模型看似在进行交错的视觉推理，但将大部分与答案相关的计算经由文本路由。我们进一步诊断出，MSC 自然源于现有训练目标：视觉对齐可使生成的潜在表示类似于辅助图像嵌入，但并不要求解码器依赖它们；随后的纯文本监督进一步使潜在通路的语义角色不可识别。为此，我们提出 AnchorSim（锚定心理模拟），一种对比蒸馏框架，训练模型使其生成的视觉潜在表示具有实际影响。在多个视觉推理基准上，AnchorSim 提升了性能，而诊断性重评估表明视觉扰动现在能显著影响预测。我们的结果揭示了潜在多模态推理的一种根本性失效模式，并证明心理模拟必须锚定于模型行为才能发挥作用。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">This paper investigates whether the continuous visual latent states used in latent multimodal reasoning by multimodal large language models actually influence their predictions, motivated by the goal of achieving human-like mental simulation. Through direct perturbation analysis across representative latent-reasoning models, the authors find that dropping, replacing, or shuffling generated visual latents has only minor effects on final-answer probability, whereas equivalent perturbations to the linguistic reasoning trace are far more damaging, a failure mode they term Mental Simulation Collapse (MSC). They diagnose that this collapse arises from existing training objectives, where visual alignment makes latents resemble helper-image embeddings without requiring the decoder to rely on them, and text-only supervision leaves the latent pathway&#x27;s semantic role unidentifiable. To address this, they introduce AnchorSim, a contrastive distillation framework that trains models to make generated visual latents consequential. Across multiple visual reasoning benchmarks, AnchorSim improves performance, and diagnostic re-evaluation shows that visual perturbations now meaningfully affect predictions.</div>
+<div class="mono" style="margin-top:8px">本文研究多模态大语言模型在潜在多模态推理中生成的连续视觉潜在状态是否真正影响其预测，动机在于检验这类模型是否真正进行了内部视觉模拟。作者通过对代表性潜在推理多模态大模型进行扰动分析发现，删除、替换或打乱生成的视觉潜在状态对模型最终答案概率仅有轻微影响，而对语言推理轨迹的同等扰动则损害显著更大，作者将这一失效模式称为心理模拟崩塌（MSC）。他们进一步诊断出该问题源于现有训练目标：视觉对齐使生成的潜在状态接近辅助图像嵌入，但并不要求解码器依赖它们，而随后的纯文本监督又使潜在通路的语义角色不可识别。为此，作者提出AnchorSim，一种对比蒸馏框架，训练模型使其生成的视觉潜在状态具有实际影响。在多个视觉推理基准上，AnchorSim提升了性能，诊断性再评估显示视觉扰动现在能显著影响预测。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Perceive-then-Plan: Layout-as-Policy for Monocular 3D Scene Layout Estimation</div>
+<div class="meta-line">Authors: Junwei Zhou, Yu-Wing Tai</div>
+<div class="meta-line">Venue: NeurIPS 2026</div>
+<div class="meta-line">First: 2026-05-25T01:16:19+00:00 · Latest: 2026-11-07T02:55:23+00:00</div>
+<div class="meta-line">Comments: Accepted by NeurIPS 2026. Project page see: https://colezwhy.github.io/perceivethenplan/</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2605.25326v3">Abs</a> · <a href="https://arxiv.org/pdf/2605.25326v3">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a> · <a href="https://colezwhy.github.io/perceivethenplan/">Project1</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Building structured 3D scene layouts from a single image requires reconciling visual observations with physical and spatial constraints, a challenge that is difficult to address with direct prediction alone. In this work, we formulate monocular 3D layout estimation as a perceive-then-plan problem with vision-language models, where a Perceiver first grounds the 3D objects and then a Planner iteratively refines the scene hypothesis through actions that improve physical plausibility while preserving consistency with the input image. We propose Layout-as-Policy (LaP), which casts the planning stage as a policy learning problem: 3D layouts are represented as structured states, and refined via discrete actions such as translation, rotation, and rescaling. Starting from an observation-aligned initialization with the geometry-enhanced Perceiver, the LaP Planner is trained to produce action sequences that progressively resolve geometric inconsistencies and enforce realistic spatial relations. To enable effective learning, we combine supervised trajectory initialization with preference-based optimization, allowing the model to learn corrective behaviors without requiring explicit reward engineering. This formulation transforms layout estimation from a one-shot prediction task into an iterative refinement process, enabling better handling of global constraints and complex object interactions. Experiments demonstrate that our approach produces layouts that are more physically coherent and better aligned with visual observations, while naturally supporting downstream tasks such as scene editing and manipulation.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>先感知后规划：面向单目3D场景布局估计的布局即策略</div>
+<div class="mono" style="margin-top:8px">从单张图像构建结构化的3D场景布局，需要将视觉观测与物理和空间约束相协调，这一挑战仅靠直接预测难以应对。在本工作中，我们将单目3D布局估计形式化为视觉语言模型下的先感知后规划问题：Perceiver首先对3D物体进行定位，随后Planner通过能够提升物理合理性同时保持与输入图像一致性的动作，迭代地精化场景假设。我们提出布局即策略（Layout-as-Policy，LaP），将规划阶段转化为策略学习问题：3D布局被表示为结构化状态，并通过平移、旋转和缩放等离散动作进行精化。从借助几何增强的Perceiver得到的与观测对齐的初始化出发，LaP Planner被训练以产生动作序列，逐步解决几何不一致并施加真实的空间关系。为实现有效学习，我们将监督式轨迹初始化与基于偏好的优化相结合，使模型无需显式奖励工程即可学习纠正行为。该形式化将布局估计从一次性预测任务转变为迭代精化过程，从而能够更好地处理全局约束和复杂的物体交互。实验表明，我们的方法产生的布局在物理上更加连贯，且与视觉观测更加对齐，同时天然支持场景编辑与操作等下游任务。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Monocular 3D scene layout estimation from a single image is hard because direct prediction struggles to reconcile visual evidence with physical and spatial constraints. This work reframes the task as perceive-then-plan with vision-language models: a Perceiver grounds 3D objects and produces a geometry-enhanced, observation-aligned initialization, and a Planner iteratively refines the layout through discrete actions such as translation, rotation, and rescaling. The proposed Layout-as-Policy (LaP) treats planning as policy learning over structured layout states, trained with supervised trajectory initialization combined with preference-based optimization so corrective behaviors are learned without explicit reward engineering. Experiments show that LaP yields layouts that are more physically coherent and better aligned with the input image than one-shot prediction, and the iterative formulation naturally supports downstream scene editing and manipulation.</div>
+<div class="mono" style="margin-top:8px">单目三维场景布局估计需要将视觉观测与物理和空间约束相协调，仅靠一次性直接预测难以应对。本文将单目三维布局估计建模为视觉语言模型下的“先感知后规划”问题：由几何增强的 Perceiver 先定位三维物体并给出与观测对齐的初始化布局，再由 Planner 通过平移、旋转、缩放等离散动作迭代优化场景假设。所提出的 Layout-as-Policy（LaP）将规划阶段转化为结构化三维布局状态上的策略学习，采用监督轨迹初始化结合基于偏好的优化进行训练，从而无需显式奖励设计即可学习纠错行为。实验表明，该迭代优化方式生成的布局在物理合理性和与输入图像的一致性上优于直接预测，并能自然支持场景编辑与操作等下游任务。</div>
+</details>
+</div>
+<div class="card">
+<div class="title">TurnFlow: Benchmarking User-State Reasoning in Multi-Turn LLM Agents via Scene-Guided User Simulation</div>
+<div class="meta-line">Authors: Zhixun Chen, Ming Li, Anjie Liu, Xiaoyuan Zhang, Quanyu Dai, Huangxun Chen</div>
+<div class="meta-line">Venue: EMNLP 2026</div>
+<div class="meta-line">First: 2026-11-07T02:45:54+00:00 · Latest: 2026-11-07T02:45:54+00:00</div>
+<div class="meta-line">Comments: EMNLP 2026 Findings</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2611.10412v1">Abs</a> · <a href="https://arxiv.org/pdf/2611.10412v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Large Language Models (LLMs) are increasingly deployed through conversational interfaces, yet strong single-turn performance does not imply reliability in multi-turn settings. Multi-turn assistance requires a model to maintain an evolving representation of user requirements and to reason over it before complying with later requests. Failures can therefore be subtle: models may fail to recognize a changed constraint or hidden conflict, or recognize it without enforcing it in the final response. Existing benchmarks primarily test fully specified prompts, long-context recall, or controlled domain environments, leaving open-domain requirement reconciliation undermeasured. We introduce TurnFlow, an interactive benchmark for evaluating whether models preserve, revise, and act on user requirements across turns. TurnFlow combines adaptive user simulation with verifiable judging, allowing conversations to unfold naturally while keeping hidden requirements and pass/fail criteria controlled. In our evaluation, nine LLMs achieve overall pass rates from 42.86% to 59.59% on 490 scenarios. Performance varies substantially across challenge types: models perform well on Stateful Multi-Constraint Following but remain considerably less reliable on Scope Creep and Goal Shift. These results reveal persistent limitations in reasoning over evolving user requirements across turns.</div></details>
+<details class="detail"><summary>中文标题/摘要</summary>
+<div class="mono"><b>标题：</b>TurnFlow：通过场景引导的用户模拟对多轮LLM智能体中的用户状态推理进行基准测试</div>
+<div class="mono" style="margin-top:8px">大型语言模型（LLM）正越来越多地通过对话界面部署，但强大的单轮性能并不意味着在多轮设置中具有可靠性。多轮辅助要求模型维护对用户需求的持续演化表示，并在遵从后续请求之前对其进行推理。因此，失败可能很微妙：模型可能无法识别已变化的约束或隐藏冲突，或者识别到了却未在最终回复中执行。现有基准主要测试完全指定的提示、长上下文回忆或受控领域环境，导致开放域需求协调的测量不足。我们提出TurnFlow，一个交互式基准，用于评估模型是否在多轮中保持、修订并依据用户需求行动。TurnFlow将自适应用户模拟与可验证评判相结合，使对话自然展开，同时保持隐藏需求和通过/失败标准受控。在我们的评估中，九个LLM在490个场景上的总体通过率为42.86%至59.59%。性能在不同挑战类型间差异显著：模型在有状态多约束遵循上表现良好，但在范围蔓延和目标转移上仍明显不够可靠。这些结果揭示了在多轮中对演化用户需求进行推理的持续局限。</div>
+</details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">The paper addresses the gap that strong single-turn LLM performance does not guarantee reliability in multi-turn assistance, where models must maintain and reason over evolving user requirements and may fail to detect changed constraints or hidden conflicts, or detect them without enforcing them. The authors introduce TurnFlow, an interactive benchmark combining adaptive user simulation with verifiable judging, so conversations unfold naturally while hidden requirements and pass/fail criteria remain controlled. Evaluating nine LLMs on 490 scenarios, overall pass rates range from 42.86% to 59.59%, with models performing well on Stateful Multi-Constraint Following but notably less reliably on Scope Creep and Goal Shift, indicating persistent limitations in reasoning over evolving user requirements across turns.</div>
+<div class="mono" style="margin-top:8px">该论文针对的问题是：大语言模型在单轮任务上的强劲表现并不能保证多轮场景下的可靠性，多轮辅助要求模型持续维护并推理不断变化的用户需求，模型可能未能识别已改变的约束或隐藏冲突，或虽识别却未在最终回复中执行。作者提出TurnFlow，一个交互式基准，将自适应用户模拟与可验证评判相结合，使对话自然展开的同时保持隐藏需求与通过/失败标准的可控性，以弥补以往基准对开放域需求协调测量不足的问题。在490个场景上对九个模型的评估显示，总体通过率介于42.86%至59.59%之间，模型在有状态多约束遵循上表现较好，但在范围蔓延与目标转移上明显不够可靠，表明跨轮推理不断变化的用户需求仍存在持续局限。</div>
+</details>
+</div></div>
+    <details style="margin-top:16px" class="detail"><summary>History</summary>
+      <div class="history-list"><a href="archive/20261109_0724.html">20261109_0724</a>
+<a href="archive/20261108_0729.html">20261108_0729</a>
+<a href="archive/20261107_0803.html">20261107_0803</a>
+<a href="archive/20261106_0849.html">20261106_0849</a>
+<a href="archive/20261105_0851.html">20261105_0851</a>
+<a href="archive/20261104_0827.html">20261104_0827</a>
+<a href="archive/20261103_0958.html">20261103_0958</a>
+<a href="archive/20261101_2009.html">20261101_2009</a>
+<a href="archive/20261031_1921.html">20261031_1921</a>
+<a href="archive/20261030_1946.html">20261030_1946</a>
+<a href="archive/20261029_1058.html">20261029_1058</a>
+<a href="archive/20261027_2055.html">20261027_2055</a>
+<a href="archive/20261023_0615.html">20261023_0615</a>
+<a href="archive/20261022_0615.html">20261022_0615</a>
+<a href="archive/20261021_0613.html">20261021_0613</a>
+<a href="archive/20261020_0653.html">20261020_0653</a>
+<a href="archive/20261019_0523.html">20261019_0523</a>
+<a href="archive/20261018_0523.html">20261018_0523</a>
+<a href="archive/20261017_0600.html">20261017_0600</a>
+<a href="archive/20261016_0607.html">20261016_0607</a>
+<a href="archive/20261015_0612.html">20261015_0612</a>
+<a href="archive/20261014_0715.html">20261014_0715</a>
+<a href="archive/20261013_0915.html">20261013_0915</a>
+<a href="archive/20261012_0648.html">20261012_0648</a>
+<a href="archive/20261011_0624.html">20261011_0624</a>
+<a href="archive/20261010_0710.html">20261010_0710</a>
+<a href="archive/20261009_0744.html">20261009_0744</a>
+<a href="archive/20261008_0734.html">20261008_0734</a>
+<a href="archive/20261007_0659.html">20261007_0659</a>
+<a href="archive/20261006_0846.html">20261006_0846</a>
+<a href="archive/20261005_0618.html">20261005_0618</a>
+<a href="archive/20261004_0607.html">20261004_0607</a>
+<a href="archive/20261003_0657.html">20261003_0657</a>
+<a href="archive/20261002_0706.html">20261002_0706</a>
+<a href="archive/20261001_0657.html">20261001_0657</a>
+<a href="archive/20260930_0657.html">20260930_0657</a>
+<a href="archive/20260929_0749.html">20260929_0749</a>
+<a href="archive/20260928_0601.html">20260928_0601</a>
+<a href="archive/20260927_0557.html">20260927_0557</a>
+<a href="archive/20260926_0613.html">20260926_0613</a>
+<a href="archive/20260925_0613.html">20260925_0613</a>
+<a href="archive/20260924_0612.html">20260924_0612</a>
+<a href="archive/20260923_0559.html">20260923_0559</a>
+<a href="archive/20260922_0634.html">20260922_0634</a>
+<a href="archive/20260921_0526.html">20260921_0526</a>
+<a href="archive/20260920_0525.html">20260920_0525</a>
+<a href="archive/20260919_0536.html">20260919_0536</a>
+<a href="archive/20260918_0605.html">20260918_0605</a>
+<a href="archive/20260917_0604.html">20260917_0604</a>
+<a href="archive/20260916_0606.html">20260916_0606</a>
+<a href="archive/20260915_0627.html">20260915_0627</a>
+<a href="archive/20260913_0522.html">20260913_0522</a>
+<a href="archive/20260912_0541.html">20260912_0541</a>
+<a href="archive/20260911_0534.html">20260911_0534</a>
+<a href="archive/20260910_0539.html">20260910_0539</a>
+<a href="archive/20260909_0547.html">20260909_0547</a>
+<a href="archive/20260908_0559.html">20260908_0559</a>
+<a href="archive/20260907_0513.html">20260907_0513</a>
+<a href="archive/20260906_0507.html">20260906_0507</a>
+<a href="archive/20260905_0523.html">20260905_0523</a>
+<a href="archive/20260904_0540.html">20260904_0540</a>
+<a href="archive/20260903_0545.html">20260903_0545</a>
+<a href="archive/20260902_0544.html">20260902_0544</a>
+<a href="archive/20260901_0712.html">20260901_0712</a>
+<a href="archive/20260831_0555.html">20260831_0555</a>
+<a href="archive/20260830_0540.html">20260830_0540</a>
+<a href="archive/20260829_1004.html">20260829_1004</a>
+<a href="archive/20260828_1134.html">20260828_1134</a>
+<a href="archive/20260827_0547.html">20260827_0547</a>
+<a href="archive/20260826_0339.html">20260826_0339</a>
+<a href="archive/20260825_0337.html">20260825_0337</a>
+<a href="archive/20260824_0329.html">20260824_0329</a>
+<a href="archive/20260823_0330.html">20260823_0330</a>
+<a href="archive/20260822_0332.html">20260822_0332</a>
+<a href="archive/20260821_0338.html">20260821_0338</a>
+<a href="archive/20260820_0335.html">20260820_0335</a>
+<a href="archive/20260819_0338.html">20260819_0338</a>
+<a href="archive/20260818_0335.html">20260818_0335</a>
+<a href="archive/20260817_0328.html">20260817_0328</a>
+<a href="archive/20260816_0328.html">20260816_0328</a>
+<a href="archive/20260815_0352.html">20260815_0352</a>
+<a href="archive/20260814_0359.html">20260814_0359</a>
+<a href="archive/20260813_0403.html">20260813_0403</a>
+<a href="archive/20260812_0404.html">20260812_0404</a>
+<a href="archive/20260811_0357.html">20260811_0357</a>
+<a href="archive/20260810_0341.html">20260810_0341</a>
+<a href="archive/20260809_0338.html">20260809_0338</a>
+<a href="archive/20260808_0356.html">20260808_0356</a>
+<a href="archive/20260807_0844.html">20260807_0844</a>
+<a href="archive/20260806_0437.html">20260806_0437</a>
+<a href="archive/20260805_0439.html">20260805_0439</a>
+<a href="archive/20260804_0437.html">20260804_0437</a>
+<a href="archive/20260803_0416.html">20260803_0416</a>
+<a href="archive/20260802_0414.html">20260802_0414</a>
+<a href="archive/20260801_0426.html">20260801_0426</a>
+<a href="archive/20260731_0421.html">20260731_0421</a>
+<a href="archive/20260730_0416.html">20260730_0416</a>
+<a href="archive/20260727_0416.html">20260727_0416</a>
+<a href="archive/20260726_0414.html">20260726_0414</a>
+<a href="archive/20260725_0432.html">20260725_0432</a>
+<a href="archive/20260724_0419.html">20260724_0419</a>
+<a href="archive/20260723_0418.html">20260723_0418</a>
+<a href="archive/20260722_0423.html">20260722_0423</a>
+<a href="archive/20260721_0427.html">20260721_0427</a>
+<a href="archive/20260720_0411.html">20260720_0411</a>
+<a href="archive/20260719_0407.html">20260719_0407</a>
+<a href="archive/20260718_0413.html">20260718_0413</a>
+<a href="archive/20260717_0408.html">20260717_0408</a>
+<a href="archive/20260716_0417.html">20260716_0417</a>
+<a href="archive/20260715_0420.html">20260715_0420</a>
+<a href="archive/20260714_0421.html">20260714_0421</a>
+<a href="archive/20260713_0409.html">20260713_0409</a>
+<a href="archive/20260712_0409.html">20260712_0409</a>
+<a href="archive/20260711_0439.html">20260711_0439</a>
+<a href="archive/20260710_0454.html">20260710_0454</a>
+<a href="archive/20260709_0426.html">20260709_0426</a>
+<a href="archive/20260708_0455.html">20260708_0455</a>
+<a href="archive/20260707_0456.html">20260707_0456</a>
+<a href="archive/20260706_0421.html">20260706_0421</a>
+<a href="archive/20260705_0415.html">20260705_0415</a>
+<a href="archive/20260704_0421.html">20260704_0421</a>
+<a href="archive/20260703_0425.html">20260703_0425</a>
+<a href="archive/20260702_0452.html">20260702_0452</a>
+<a href="archive/20260701_0502.html">20260701_0502</a>
+<a href="archive/20260630_0454.html">20260630_0454</a>
+<a href="archive/20260629_0420.html">20260629_0420</a>
+<a href="archive/20260628_0423.html">20260628_0423</a>
+<a href="archive/20260627_0450.html">20260627_0450</a>
+<a href="archive/20260626_0502.html">20260626_0502</a>
+<a href="archive/20260625_0455.html">20260625_0455</a>
+<a href="archive/20260624_0505.html">20260624_0505</a>
+<a href="archive/20260623_0535.html">20260623_0535</a>
+<a href="archive/20260622_0445.html">20260622_0445</a>
+<a href="archive/20260621_0422.html">20260621_0422</a>
+<a href="archive/20260620_0442.html">20260620_0442</a>
+<a href="archive/20260619_0531.html">20260619_0531</a>
+<a href="archive/20260618_0519.html">20260618_0519</a>
+<a href="archive/20260617_0545.html">20260617_0545</a>
+<a href="archive/20260616_0549.html">20260616_0549</a>
+<a href="archive/20260615_0423.html">20260615_0423</a>
+<a href="archive/20260614_0423.html">20260614_0423</a>
+<a href="archive/20260613_0505.html">20260613_0505</a>
+<a href="archive/20260612_0528.html">20260612_0528</a>
+<a href="archive/20260611_0528.html">20260611_0528</a>
+<a href="archive/20260610_0504.html">20260610_0504</a>
+<a href="archive/20260609_0514.html">20260609_0514</a>
+<a href="archive/20260608_0421.html">20260608_0421</a>
+<a href="archive/20260607_0418.html">20260607_0418</a>
+<a href="archive/20260606_0451.html">20260606_0451</a>
+<a href="archive/20260604_0557.html">20260604_0557</a>
+<a href="archive/20260603_0556.html">20260603_0556</a>
+<a href="archive/20260602_0615.html">20260602_0615</a>
+<a href="archive/20260601_0419.html">20260601_0419</a>
+<a href="archive/20260531_0414.html">20260531_0414</a>
+<a href="archive/20260530_0512.html">20260530_0512</a>
+<a href="archive/20260529_0515.html">20260529_0515</a>
+<a href="archive/20260527_0459.html">20260527_0459</a>
+<a href="archive/20260526_0426.html">20260526_0426</a>
+<a href="archive/20260525_0417.html">20260525_0417</a>
+<a href="archive/20260524_0411.html">20260524_0411</a>
+<a href="archive/20260523_0445.html">20260523_0445</a>
+<a href="archive/20260522_0454.html">20260522_0454</a>
+<a href="archive/20260521_0508.html">20260521_0508</a>
+<a href="archive/20260520_0449.html">20260520_0449</a>
+<a href="archive/20260519_0442.html">20260519_0442</a>
+<a href="archive/20260518_0409.html">20260518_0409</a>
+<a href="archive/20260517_0425.html">20260517_0425</a>
+<a href="archive/20260516_0436.html">20260516_0436</a>
+<a href="archive/20260515_0457.html">20260515_0457</a>
+<a href="archive/20260514_0507.html">20260514_0507</a>
+<a href="archive/20260513_0503.html">20260513_0503</a>
+<a href="archive/20260512_0505.html">20260512_0505</a>
+<a href="archive/20260511_0418.html">20260511_0418</a>
+<a href="archive/20260510_0414.html">20260510_0414</a>
+<a href="archive/20260509_0426.html">20260509_0426</a>
+<a href="archive/20260508_0435.html">20260508_0435</a>
+<a href="archive/20260507_0454.html">20260507_0454</a>
+<a href="archive/20260506_0427.html">20260506_0427</a>
+<a href="archive/20260505_0436.html">20260505_0436</a>
+<a href="archive/20260504_0410.html">20260504_0410</a>
+<a href="archive/20260503_0414.html">20260503_0414</a>
+<a href="archive/20260502_0426.html">20260502_0426</a>
+<a href="archive/20260501_0429.html">20260501_0429</a>
+<a href="archive/20260430_0430.html">20260430_0430</a>
+<a href="archive/20260429_0437.html">20260429_0437</a>
+<a href="archive/20260428_0429.html">20260428_0429</a>
+<a href="archive/20260427_0405.html">20260427_0405</a>
+<a href="archive/20260426_0404.html">20260426_0404</a>
+<a href="archive/20260425_0410.html">20260425_0410</a>
+<a href="archive/20260424_0430.html">20260424_0430</a>
+<a href="archive/20260423_0426.html">20260423_0426</a>
+<a href="archive/20260422_0424.html">20260422_0424</a>
+<a href="archive/20260421_0418.html">20260421_0418</a>
+<a href="archive/20260420_0359.html">20260420_0359</a>
+<a href="archive/20260419_0358.html">20260419_0358</a>
+<a href="archive/20260418_0415.html">20260418_0415</a>
+<a href="archive/20260417_0421.html">20260417_0421</a>
+<a href="archive/20260416_0425.html">20260416_0425</a>
+<a href="archive/20260415_0426.html">20260415_0426</a>
+<a href="archive/20260414_0423.html">20260414_0423</a>
+<a href="archive/20260413_0352.html">20260413_0352</a>
+<a href="archive/20260412_0347.html">20260412_0347</a>
+<a href="archive/20260411_0356.html">20260411_0356</a>
+<a href="archive/20260410_0412.html">20260410_0412</a>
+<a href="archive/20260409_0411.html">20260409_0411</a>
+<a href="archive/20260407_0404.html">20260407_0404</a>
+<a href="archive/20260406_0347.html">20260406_0347</a>
+<a href="archive/20260405_0344.html">20260405_0344</a>
+<a href="archive/20260404_0350.html">20260404_0350</a>
+<a href="archive/20260403_0400.html">20260403_0400</a>
+<a href="archive/20260401_0408.html">20260401_0408</a>
+<a href="archive/20260331_0407.html">20260331_0407</a>
+<a href="archive/20260329_0347.html">20260329_0347</a>
+<a href="archive/20260328_0350.html">20260328_0350</a>
+<a href="archive/20260326_0357.html">20260326_0357</a>
+<a href="archive/20260325_0405.html">20260325_0405</a>
+<a href="archive/20260324_0400.html">20260324_0400</a>
+<a href="archive/20260323_0342.html">20260323_0342</a>
+<a href="archive/20260322_0340.html">20260322_0340</a>
+<a href="archive/20260321_0347.html">20260321_0347</a>
+<a href="archive/20260320_0356.html">20260320_0356</a>
+<a href="archive/20260319_0358.html">20260319_0358</a>
+<a href="archive/20260318_0405.html">20260318_0405</a>
+<a href="archive/20260317_0401.html">20260317_0401</a>
+<a href="archive/20260316_0343.html">20260316_0343</a>
+<a href="archive/20260315_0341.html">20260315_0341</a>
+<a href="archive/20260314_0344.html">20260314_0344</a>
+<a href="archive/20260313_0352.html">20260313_0352</a>
+<a href="archive/20260312_0352.html">20260312_0352</a>
+<a href="archive/20260311_0347.html">20260311_0347</a>
+<a href="archive/20260310_0350.html">20260310_0350</a>
+<a href="archive/20260309_0338.html">20260309_0338</a>
+<a href="archive/20260308_0337.html">20260308_0337</a>
+<a href="archive/20260307_0347.html">20260307_0347</a>
+<a href="archive/20260306_0402.html">20260306_0402</a>
+<a href="archive/20260305_0348.html">20260305_0348</a>
+<a href="archive/20260304_0348.html">20260304_0348</a>
+<a href="archive/20260303_0348.html">20260303_0348</a>
+<a href="archive/20260302_0336.html">20260302_0336</a>
+<a href="archive/20260301_0339.html">20260301_0339</a>
+<a href="archive/20260228_0348.html">20260228_0348</a>
+<a href="archive/20260227_0354.html">20260227_0354</a>
+<a href="archive/20260226_0402.html">20260226_0402</a>
+<a href="archive/20260225_0404.html">20260225_0404</a>
+<a href="archive/20260224_0406.html">20260224_0406</a>
+<a href="archive/20260223_0338.html">20260223_0338</a>
+<a href="archive/20260222_0339.html">20260222_0339</a>
+<a href="archive/20260221_0345.html">20260221_0345</a>
+<a href="archive/20260220_0348.html">20260220_0348</a>
+<a href="archive/20260219_0358.html">20260219_0358</a>
+<a href="archive/20260218_0358.html">20260218_0358</a>
+<a href="archive/20260217_0343.html">20260217_0343</a>
+<a href="archive/20260216_0339.html">20260216_0339</a>
+<a href="archive/20260215_0338.html">20260215_0338</a>
+<a href="archive/20260213_0401.html">20260213_0401</a>
+<a href="archive/20260212_0404.html">20260212_0404</a>
+<a href="archive/20260210_0409.html">20260210_0409</a>
+<a href="archive/20260208_0339.html">20260208_0339</a>
+<a href="archive/20260207_0349.html">20260207_0349</a>
+<a href="archive/20260206_0347.html">20260206_0347</a>
+<a href="archive/20260205_0346.html">20260205_0346</a>
+<a href="archive/20260204_0354.html">20260204_0354</a>
+<a href="archive/20260202_0337.html">20260202_0337</a>
+<a href="archive/20260201_0333.html">20260201_0333</a>
+<a href="archive/20260131_0345.html">20260131_0345</a>
+<a href="archive/20260130_0341.html">20260130_0341</a>
+<a href="archive/20260129_0344.html">20260129_0344</a>
+<a href="archive/20260128_0341.html">20260128_0341</a>
+<a href="archive/20260127_0338.html">20260127_0338</a>
+<a href="archive/20260126_0330.html">20260126_0330</a>
+<a href="archive/20260125_0329.html">20260125_0329</a>
+<a href="archive/20260124_0337.html">20260124_0337</a>
+<a href="archive/20260123_0337.html">20260123_0337</a>
+<a href="archive/20260122_0343.html">20260122_0343</a>
+<a href="archive/20260121_0424.html">20260121_0424</a>
+<a href="archive/20260119_0329.html">20260119_0329</a>
+<a href="archive/20260118_0327.html">20260118_0327</a>
+<a href="archive/20260117_0332.html">20260117_0332</a>
+<a href="archive/20260116_0339.html">20260116_0339</a>
+<a href="archive/20260115_0334.html">20260115_0334</a>
+<a href="archive/20260114_0333.html">20260114_0333</a>
+<a href="archive/20260113_0334.html">20260113_0334</a>
+<a href="archive/20260112_0331.html">20260112_0331</a>
+<a href="archive/20260111_0329.html">20260111_0329</a>
+<a href="archive/20260110_0333.html">20260110_0333</a>
+<a href="archive/20260109_0334.html">20260109_0334</a>
+<a href="archive/20260108_0335.html">20260108_0335</a>
+<a href="archive/20260107_0330.html">20260107_0330</a>
+<a href="archive/20260106_0336.html">20260106_0336</a>
+<a href="archive/20260105_0328.html">20260105_0328</a>
+<a href="archive/20260104_0328.html">20260104_0328</a>
+<a href="archive/20260103_0325.html">20260103_0325</a>
+<a href="archive/20260102_0339.html">20260102_0339</a>
+<a href="archive/20260101_0329.html">20260101_0329</a>
+<a href="archive/20251231_0333.html">20251231_0333</a>
+<a href="archive/20251230_0332.html">20251230_0332</a>
+<a href="archive/20251229_0329.html">20251229_0329</a>
+<a href="archive/20251228_0332.html">20251228_0332</a>
+<a href="archive/20251227_0329.html">20251227_0329</a>
+<a href="archive/20251226_0330.html">20251226_0330</a>
+<a href="archive/20251225_0329.html">20251225_0329</a>
+<a href="archive/20251224_0331.html">20251224_0331</a>
+<a href="archive/20251223_0332.html">20251223_0332</a>
+<a href="archive/20251222_0328.html">20251222_0328</a>
+<a href="archive/20251221_0329.html">20251221_0329</a>
+<a href="archive/20251220_0330.html">20251220_0330</a>
+<a href="archive/20251219_0330.html">20251219_0330</a>
+<a href="archive/20251218_0345.html">20251218_0345</a>
+<a href="archive/20251217_0332.html">20251217_0332</a>
+<a href="archive/20251216_0333.html">20251216_0333</a>
+<a href="archive/20251215_0333.html">20251215_0333</a>
+<a href="archive/20251214_0327.html">20251214_0327</a>
+<a href="archive/20251212_0333.html">20251212_0333</a>
+<a href="archive/20251211_0331.html">20251211_0331</a>
+<a href="archive/20251210_0332.html">20251210_0332</a>
+<a href="archive/20251209_0331.html">20251209_0331</a>
+<a href="archive/20251208_0328.html">20251208_0328</a>
+<a href="archive/20251207_0327.html">20251207_0327</a>
+<a href="archive/20251206_0330.html">20251206_0330</a>
+<a href="archive/20251205_0331.html">20251205_0331</a>
+<a href="archive/20251204_0331.html">20251204_0331</a>
+<a href="archive/20251203_0333.html">20251203_0333</a>
+<a href="archive/20251202_0335.html">20251202_0335</a>
+<a href="archive/20251201_0328.html">20251201_0328</a>
+<a href="archive/20251130_0327.html">20251130_0327</a>
+<a href="archive/20251129_0328.html">20251129_0328</a>
+<a href="archive/20251128_0327.html">20251128_0327</a>
+<a href="archive/20251127_0327.html">20251127_0327</a>
+<a href="archive/20251126_0329.html">20251126_0329</a>
+<a href="archive/20251125_0327.html">20251125_0327</a>
+<a href="archive/20251124_0327.html">20251124_0327</a>
+<a href="archive/20251123_0326.html">20251123_0326</a>
+<a href="archive/20251122_0328.html">20251122_0328</a>
+<a href="archive/20251121_0328.html">20251121_0328</a>
+<a href="archive/20251120_0329.html">20251120_0329</a>
+<a href="archive/20251119_0328.html">20251119_0328</a>
+<a href="archive/20251118_0328.html">20251118_0328</a>
+<a href="archive/20251117_0326.html">20251117_0326</a>
+<a href="archive/20251116_0325.html">20251116_0325</a>
+<a href="archive/20251115_0327.html">20251115_0327</a>
+<a href="archive/20251114_0328.html">20251114_0328</a>
+<a href="archive/20251113_0330.html">20251113_0330</a>
+<a href="archive/20251112_0329.html">20251112_0329</a>
+<a href="archive/20251111_0328.html">20251111_0328</a>
+<a href="archive/20251110_0325.html">20251110_0325</a>
+<a href="archive/20251109_0326.html">20251109_0326</a>
+<a href="archive/20251108_0328.html">20251108_0328</a>
+<a href="archive/20251107_0328.html">20251107_0328</a>
+<a href="archive/20251106_0329.html">20251106_0329</a>
+<a href="archive/20251105_0326.html">20251105_0326</a>
+<a href="archive/20251104_0327.html">20251104_0327</a>
+<a href="archive/20251103_0324.html">20251103_0324</a>
+<a href="archive/20251102_0326.html">20251102_0326</a>
+<a href="archive/20251101_0324.html">20251101_0324</a>
+<a href="archive/20251031_0328.html">20251031_0328</a>
+<a href="archive/20251030_0330.html">20251030_0330</a>
+<a href="archive/20251029_0329.html">20251029_0329</a>
+<a href="archive/20251028_0329.html">20251028_0329</a>
+<a href="archive/20251027_0322.html">20251027_0322</a>
+<a href="archive/20251026_0327.html">20251026_0327</a>
+<a href="archive/20251025_0331.html">20251025_0331</a>
+<a href="archive/20251024_0329.html">20251024_0329</a>
+<a href="archive/20251023_0329.html">20251023_0329</a>
+<a href="archive/20251022_0330.html">20251022_0330</a>
+<a href="archive/20251021_0331.html">20251021_0331</a>
+<a href="archive/20251020_0328.html">20251020_0328</a>
+<a href="archive/20251019_0321.html">20251019_0321</a>
+<a href="archive/20251018_0327.html">20251018_0327</a>
+<a href="archive/20251017_0320.html">20251017_0320</a>
+<a href="archive/20251016_0328.html">20251016_0328</a>
+<a href="archive/20251015_0328.html">20251015_0328</a>
+<a href="archive/20251014_0323.html">20251014_0323</a>
+<a href="archive/20251011_0328.html">20251011_0328</a>
+<a href="archive/20251010_0330.html">20251010_0330</a>
+<a href="archive/20251009_0321.html">20251009_0321</a>
+<a href="archive/20251008_0343.html">20251008_0343</a>
+<a href="archive/20251007_0353.html">20251007_0353</a>
+<a href="archive/20251006_0325.html">20251006_0325</a>
+<a href="archive/20251005_0350.html">20251005_0350</a>
+<a href="archive/20251004_0352.html">20251004_0352</a>
+<a href="archive/20251003_0352.html">20251003_0352</a>
+<a href="archive/20251002_0356.html">20251002_0356</a>
+<a href="archive/20251001_0321.html">20251001_0321</a>
+<a href="archive/20250925_0335.html">20250925_0335</a>
+<a href="archive/20250924_0350.html">20250924_0350</a>
+<a href="archive/20250923_0348.html">20250923_0348</a>
+<a href="archive/20250922_0346.html">20250922_0346</a>
+<a href="archive/20250921_0345.html">20250921_0345</a>
+<a href="archive/20250920_0342.html">20250920_0342</a>
+<a href="archive/20250919_0346.html">20250919_0346</a>
+<a href="archive/20250918_0342.html">20250918_0342</a>
+<a href="archive/20250917_0336.html">20250917_0336</a>
+<a href="archive/20250916_0333.html">20250916_0333</a>
+<a href="archive/20250915_0333.html">20250915_0333</a>
+<a href="archive/20250914_0328.html">20250914_0328</a>
+<a href="archive/20250913_0322.html">20250913_0322</a>
+<a href="archive/20250912_0335.html">20250912_0335</a>
+<a href="archive/20250911_0337.html">20250911_0337</a>
+<a href="archive/20250910_0338.html">20250910_0338</a>
+<a href="archive/20250909_0341.html">20250909_0341</a>
+<a href="archive/20250908_0342.html">20250908_0342</a>
+<a href="archive/20250907_0333.html">20250907_0333</a>
+<a href="archive/20250906_0350.html">20250906_0350</a>
+<a href="archive/20250905_0319.html">20250905_0319</a>
+<a href="archive/20250904_0323.html">20250904_0323</a>
+<a href="archive/20250903_0355.html">20250903_0355</a>
+<a href="archive/20250902_0325.html">20250902_0325</a>
+<a href="archive/20250901_0355.html">20250901_0355</a>
+<a href="archive/20250831_0355.html">20250831_0355</a>
+<a href="archive/20250830_0356.html">20250830_0356</a>
+<a href="archive/20250829_0355.html">20250829_0355</a>
+<a href="archive/20250828_0333.html">20250828_0333</a>
+<a href="archive/20250827_1654.html">20250827_1654</a>
+<a href="archive/20250827_1602.html">20250827_1602</a>
+<a href="archive/20250827_1557.html">20250827_1557</a>
+<a href="archive/20250827_0320.html">20250827_0320</a>
+<a href="archive/20250826_0320.html">20250826_0320</a>
+<a href="archive/20250825_1752.html">20250825_1752</a>
+<a href="archive/20250825_1709.html">20250825_1709</a>
+<a href="archive/20250825_1652.html">20250825_1652</a>
+<a href="archive/20250825_1647.html">20250825_1647</a>
+<a href="archive/20250825_1645.html">20250825_1645</a>
+<a href="archive/20250825_1631.html">20250825_1631</a>
+<a href="archive/20250825_1606.html">20250825_1606</a>
+<a href="archive/20250825_1559.html">20250825_1559</a>
+<a href="archive/20250825_1558.html">20250825_1558</a>
+<a href="archive/20250825_1556.html">20250825_1556</a>
+<a href="archive/20250825_1531.html">20250825_1531</a>
+<a href="archive/20250825_1525.html">20250825_1525</a>
+<a href="archive/20250825_1516.html">20250825_1516</a>
+<a href="archive/20250825_1450.html">20250825_1450</a>
+<a href="archive/20250825_1444.html">20250825_1444</a>
+<a href="archive/20250825_1438.html">20250825_1438</a>
+<a href="archive/20250825_1414.html">20250825_1414</a>
+<a href="archive/20250825_1413.html">20250825_1413</a>
+<a href="archive/20250825_1410.html">20250825_1410</a>
+<a href="archive/20250825_1408.html">20250825_1408</a>
+<a href="archive/20250825_1405.html">20250825_1405</a>
+<a href="archive/20250825_1401.html">20250825_1401</a>
+<a href="archive/20250825_1355.html">20250825_1355</a>
+<a href="archive/20250825_1347.html">20250825_1347</a>
+<a href="archive/20250825_1345.html">20250825_1345</a>
+<a href="archive/20250825_1344.html">20250825_1344</a>
+<a href="archive/20250825_1343.html">20250825_1343</a>
+<a href="archive/20250825_1340.html">20250825_1340</a>
+<a href="archive/20250825_1339.html">20250825_1339</a>
+<a href="archive/20250825_1333.html">20250825_1333</a>
+<a href="archive/20250825_1323.html">20250825_1323</a>
+<a href="archive/20250825_1317.html">20250825_1317</a>
+<a href="archive/20250825_1243.html">20250825_1243</a>
+<a href="archive/20250824_0342.html">20250824_0342</a>
+<a href="archive/20250823_0343.html">20250823_0343</a>
+<a href="archive/20250823_0142.html">20250823_0142</a>
+<a href="archive/20250822_2331.html">20250822_2331</a>
+<a href="archive/20250822_2308.html">20250822_2308</a>
+<a href="archive/20250822_2258.html">20250822_2258</a>
+<a href="archive/20250822_2241.html">20250822_2241</a>
+<a href="archive/20250822_2228.html">20250822_2228</a>
+<a href="archive/20250822_2206.html">20250822_2206</a>
+<a href="archive/20250822_2147.html">20250822_2147</a>
+<a href="archive/20250822_2111.html">20250822_2111</a>
+<a href="archive/20250822_1259.html">20250822_1259</a>
+<a href="archive/20250822_1233.html">20250822_1233</a>
+<a href="archive/20250822_1229.html">20250822_1229</a>
+<a href="archive/20250822_1223.html">20250822_1223</a>
+<a href="archive/20250822_1210.html">20250822_1210</a>
+<a href="archive/20250822_1201.html">20250822_1201</a>
+<a href="archive/20250822_1111.html">20250822_1111</a>
+<a href="archive/20250822_1058.html">20250822_1058</a>
+<a href="archive/20250822_1052.html">20250822_1052</a>
+<a href="archive/20250822_1045.html">20250822_1045</a>
+<a href="archive/20250822_0657.html">20250822_0657</a>
+<a href="archive/20250822_0553.html">20250822_0553</a></div>
+    </details>
+    <div class="footer">Generated by arxiv-tracker</div>
+  </div>
+</body></html>
